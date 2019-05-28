@@ -1,0 +1,99 @@
+#map {
+    width: 100%;
+    height: 100vh;
+}
+
+.full-page {
+    height:100vh; 
+    width:100%;
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.2)), url('../img/header.jpg');
+    background-size: cover;
+    z-index: 2;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    position: relative; 
+}
+
+#map {
+    width: 70%;
+    height: 100vh;
+}
+
+.current-location-marker {
+    background-color: #55F;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0,0,0,0.25);
+    width: 1rem;
+    height: 1rem;
+}
+
+
+
+hr {
+    border-color:#d4d8da;
+
+}
+
+.jumbotron-preference {
+    border-radius:3px;
+    background:linear-gradient(rgba(0, 0, 250, 0.25), rgba(125, 250, 250, 0.45)), url(../img/header.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color:white !important;
+    
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+}
+
+#scrollPusher {
+    width: 475px;
+}
+
+#restImgs {
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width:40%;
+    height:50%;
+}
+
+.popup-img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.mapboxgl-popup-content {
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 30%; /* Set the width of the sidebar */ 
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    right: 0;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    background-color: DeepSkyBlue;
+
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+#logo {
+    padding: 2rem;
+}
+
+#logo h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
