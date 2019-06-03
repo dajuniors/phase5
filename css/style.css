@@ -4,7 +4,7 @@
 }
 
 .full-page {
-    height:100vh; 
+    height:100vh;
     width:100%;
     background-image: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.2)), url('../img/header.jpg');
     background-size: cover;
@@ -12,7 +12,7 @@
     display: flex;
     flex-flow: column;
     justify-content: center;
-    position: relative; 
+    position: relative;
 }
 
 #map {
@@ -41,7 +41,7 @@ hr {
     background-repeat: no-repeat;
     background-attachment: fixed;
     color:white !important;
-    
+
 }
 
 .sticky {
@@ -72,7 +72,7 @@ hr {
 
 .sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 30%; /* Set the width of the sidebar */ 
+    width: 30%; /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
@@ -88,6 +88,25 @@ hr {
     font-size: 25px;
     color: #818181;
     display: block;
+}
+
+.sidenav .filter {
+    padding: 6px 8px 6px 16px;
+    font-size: 15px;
+    background-color: LightGreen;
+}
+
+.filter ul {
+    list-style-type: none;
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+
+.filter ul li {
+    display: table-cell;
+    width: auto;
+    text-align: center;
 }
 
 #logo {
