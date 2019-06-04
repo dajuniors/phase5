@@ -78,7 +78,7 @@ hr {
     top: 0; /* Stay at the top */
     right: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
-    background-color: DeepSkyBlue;
+    background-color: #EBBEBE;
 
 }
 
@@ -120,3 +120,5 @@ hr {
 .small_icon {
     text-align: right
 }
+
+
