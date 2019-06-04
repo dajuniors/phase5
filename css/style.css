@@ -116,3 +116,7 @@ hr {
 #logo h1 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+.small_icon {
+    text-align: right
+}
