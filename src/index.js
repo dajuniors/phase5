@@ -10,7 +10,7 @@ let state = {
 }
 /**
  * Handles responses from the fetch() API.
- * @param {Response} response 
+ * @param {Response} response
  * @returns {Promise}
  */
 function handleResponse(response) {
@@ -69,4 +69,49 @@ function fetchData () {
         }
     })
     .catch(err => console.error(err));
+}
+
+var allCheckboxes = document.querySelectorAll("input[type=checkbox]");
+var allRestrooms = Array.from(document.querySelectorAll(".list-group-item list-group-flush flex-column align-items-start"));
+var checked = {};
+
+getChecked("gender");
+getChecked("dis");
+getChecked("key");
+
+Array.prototype.forEach.call(allCheckboxes, function(el) {
+  el.addEventListener("change", toggleCheckbox);
+});
+
+function toggleCheckbox(e) {
+  getChecked(e.target.name);
+  setVisibility();
+}
+
+function getChecked(name) {
+  checked[name] = Array.from(
+    document.querySelectorAll("input[name=" + name + "]:checked")
+  ).map(function(el) {
+    return el.value;
+  });
+}
+
+function setVisibility() {
+  allRestrooms.map(function(el) {
+    var gender = checked.gender.length
+      ? _.intersection(Array.from(el.classList), checked.gender)
+          .length
+      : true;
+    var disability = checked.dis.length
+      ? _.intersection(Array.from(el.classList), checked.dis).length
+      : true;
+    var key = checked.key.length
+      ? _.intersection(Array.from(el.classList), checked.key).length
+      : true;
+    if (gender && disability && key) {
+      el.style.display = "block";
+    } else {
+      el.style.display = "none";
+    }
+  });
 }
