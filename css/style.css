@@ -117,8 +117,12 @@ hr {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.small_icon {
-    text-align: right
+
+
+.card_btn {
+    width: 100%;
 }
 
-
+.small_icon {
+    text-align: right;
+}
