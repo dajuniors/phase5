@@ -1,10 +1,10 @@
-"use strict";
-
-const dataURL = "https://developers.zomato.com/api/v2.1"
+// "use strict";
 
 
+console.log(mapkey);
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0aGx1IiwiYSI6ImNqZTRrOGljMjR6MmQycG11dzJhNGV4aGEifQ.gyYTYNhFfNV40_tnvS8CZA';
+
+mapboxgl.accessToken = mapkey;
 
 let state = {
     currLat: undefined,
