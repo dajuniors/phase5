@@ -78,7 +78,7 @@ hr {
     top: 0; /* Stay at the top */
     right: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
-    background-color: DeepSkyBlue;
+    background-color: #EBBEBE;
 
 }
 
@@ -115,4 +115,14 @@ hr {
 
 #logo h1 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+
+.card_btn {
+    width: 100%;
+}
+
+.small_icon {
+    text-align: right;
 }

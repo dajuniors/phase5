@@ -13,20 +13,20 @@
 <body>
     <div class="sidenav">
         <div class="container text-center" id="logo">
-            <h1>OneBathroomAway</h1>
+            <h1>OneRestroomAway</h1>
         </div>
         <div class="filter">
           <ul>
             <li>
-              <input type="checkbox" name="male" id="male" value="Male">
-              <label for="male">Male Bathroom</label>
+              <input type="checkbox" name="gender" id="male" value="Male">
+              <label for="male">Male Restroom</label>
             </li>
             <li>
-              <input type="checkbox" name="female" id="female" value="Female">
-              <label for="female">Female Bathroom</label>
+              <input type="checkbox" name="gender" id="female" value="Female">
+              <label for="female">Female Restroom</label>
             </li>
             <li>
-              <input type="checkbox" name="gn" id="gn" value="Gender Neutral">
+              <input type="checkbox" name="gender" id="gn" value="Gender Neutral">
               <label for="gn">Gender Neutral</label>
             </li>
             <li>
@@ -39,47 +39,100 @@
             </li>
           </ul>
         </div>
-        <div class="list-group">
-            <a class="list-group-item list-group-flush flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                <h1 class="mb-1">Mary Gates Hall</h1>
-                <small>3 days ago</small>
-                </div>
-                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                <small>Donec id elit non mi porta.</small>
-            </a>
-            <a class="list-group-item list-group-flush flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                <h1 class="mb-1">Johnson Hall</h1>
-                <small class="text-muted">3 days ago</small>
-                </div>
-                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                <small class="text-muted">Donec id elit non mi porta.</small>
-            </a>
-            <a class="list-group-item list-group-flush flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                <h1 class="mb-1">Allen Library</h1>
-                <small class="text-muted">3 days ago</small>
-                </div>
-                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                <small class="text-muted">Donec id elit non mi porta.</small>
-            </a>
-            <a class="list-group-item list-group-flush flex-column align-items-start">
+
+        <!-- spacing between cards -->
+        <div class="col-md-6 col-lg-4 mt-3"></div>
+
+        <a class="list-group">
+            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+                <div>
                     <div class="d-flex w-100 justify-content-between">
-                    <h1 class="mb-1">Bathroom Name</h1>
-                    <small class="text-muted">3 days ago</small>
+                        <h1 class="mb-1">Mary Gates Hall &ensp;</h1>
+                        <small>368 ft </small>
                     </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
+                    <div class="d-flex w-100 justify-content-between">
+                        <p class="mb-1">NE Grant LN</p>
+                        <div>
+                            <img src="access_w_24.png"/>
+                            <img src="access_k_24.png"/>
+                            <img src="access_g_24.png"/>
+                        </div>
+                    </div>
+                </div>
+            </button>
+                
+            <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
+
+            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+                <div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h1 class="mb-1">Johnson Hall &ensp;</h1>
+                        <small>430 ft </small>
+                    </div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <p class="mb-1">NE Grant LN</p>
+                        <div>
+                            <img src="access_w_24.png"/>
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+            <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
+
+            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+                <div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h1 class="mb-1">Guggenheim Hall &ensp;</h1>
+                        <small>870 ft </small>
+                    </div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <p class="mb-1">Benton LN NE</p>
+                        <div>
+                            <img src="access_w_24.png"/>
+                            <img src="access_g_24.png"/>
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+            <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
+
+            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+                <div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h1 class="mb-1">Bagley Hall &ensp;</h1>
+                        <small>700 ft </small>
+                    </div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <p class="mb-1">Okanogan LN</p>
+                        <div>
+                            <img src="access_k_24.png"/>
+                            <img src="access_g_24.png"/>
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+            <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
+
                 <a class="list-group-item list-group-flush flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                         <h1 class="mb-1">Bathroom Name</h1>
-                        <small class="text-muted">3 days ago</small>
+                        
                         </div>
+                        <div class="text-muted">3 days ago</div>
                         <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
                         <small class="text-muted">Donec id elit non mi porta.</small>
                     </a>
+
+                    <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
+
                     <a class="list-group-item list-group-flush flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                             <h1 class="mb-1">Bathroom Name</h1>
@@ -89,6 +142,10 @@
                             <small class="text-muted">Donec id elit non mi porta.</small>
                         </a>
             </div>
+            
+            <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
+            
 
     </div>
     <div id="map"></div>
