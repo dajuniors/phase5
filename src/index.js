@@ -34,6 +34,8 @@ let map = new mapboxgl.Map({
 });
 map.addControl(new mapboxgl.NavigationControl());
 
+map.on('load', function () {
+
 navigator.geolocation.getCurrentPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
 
 function onCurrentPos(position) {
@@ -48,7 +50,6 @@ function onCurrentPos(position) {
     marker.setLngLat(lnglat).addTo(map);
 }
 
-map.on('load', function () {
 map.addSource("bathrooms", {
     "type": "geojson",
     "data": allBathrooms
@@ -66,7 +67,7 @@ map.addLayer({
     }
 });
 console.log("test")
-console.log("t: ", test);
+console.log("t: ", allBathrooms);
 });
 
 
