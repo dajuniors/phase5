@@ -1,8 +1,5 @@
 "use strict";
 
-const dataURL = "https://developers.zomato.com/api/v2.1"
-
-
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0aGx1IiwiYSI6ImNqZTRrOGljMjR6MmQycG11dzJhNGV4aGEifQ.gyYTYNhFfNV40_tnvS8CZA';
 
@@ -29,8 +26,8 @@ function handleResponse(response) {
 let map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/streets-v9",
-    center: [-122.3321, 47.6062],
-    zoom: 12
+    center: [-122.308035, 47.653854],
+    zoom: 15
 });
 map.addControl(new mapboxgl.NavigationControl());
 
@@ -41,37 +38,18 @@ function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
-    console.log(state.currLat);
     map.flyTo({center: lnglat, zoom: 18});
 
     let div = document.createElement("div");
     div.className = "current-location-marker";
     let marker = new mapboxgl.Marker(div);
     marker.setLngLat(lnglat).addTo(map);
-    fetchData();
-
 }
 
 function onErrorCurrentPos(error) {
     console.error(error);
 }
 
-
-function fetchData () {
-    fetch(dataURL + "/geocode?" + "lat=" + state.currLat + "&lon=" + state.currLog, {
-        headers: {
-            "user-key": "f2a8ee09bd3a0f75fa5df0e9bdd7a04d"
-        }
-    })
-    .then(handleResponse)
-    .then(data => {
-        for (let i = 0; i < data.nearby_restaurants.length; i++) {
-            console.log(data.nearby_restaurants[i].restaurant)
-            addMarker(data.nearby_restaurants[i].restaurant);
-        }
-    })
-    .catch(err => console.error(err));
-}
 
 var allCheckboxes = document.querySelectorAll("input[type=checkbox]");
 var allRestrooms = Array.from(document.querySelectorAll(".list-group-item list-group-flush flex-column align-items-start"));
@@ -116,4 +94,71 @@ function setVisibility() {
       el.style.display = "none";
     }
   });
+}
+
+
+// tutorial https://docs.mapbox.com/help/tutorials/getting-started-directions-api/#build-a-directions-api-reques
+
+// using the user's current location,
+// pass in the coordinates for the end location
+// send requests to mapbox API
+function getRoute(end) {
+    var start = [state.currLog, state.currLat];
+    var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken; 
+    fetch(url)
+        .then(handleResponse)
+        .then(renderInstructions)
+
+}
+  
+function renderInstructions(data) {
+    var routes = data.routes[0]
+    var instructions = document.getElementById('instructions');
+    instructions.style.backgroundColor = "rgba(255, 255, 255, 0.7)"; 
+
+    var steps = routes.legs[0].steps;
+    
+    var tripInstructions = [];
+    for (var i = 0; i < steps.length; i++) {
+        tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) + '</li>';
+        instructions.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(routes.duration / 60) + ' min </span>' + tripInstructions;
+    }
+
+    //TODO: when a new location is chosen, reset the data to render a new line
+    var geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: routes.geometry.coordinates
+        }
+    }
+    
+    if (map.getSource('route')) {
+        map.getSource('route').setData(geojson)
+    }
+    map.addLayer({
+        "id": "route",
+        "type": "line",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "LineString",
+              "coordinates": routes.geometry.coordinates
+            }
+          }
+        },
+        "layout": {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        "paint": {
+          "line-color": "#3887be",
+          "line-width": 5,
+          "line-opacity": 0.75
+        }
+    })
 }
