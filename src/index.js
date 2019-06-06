@@ -51,7 +51,7 @@ function onCurrentPos(position) {
 map.on('load', function () {
 map.addSource("bathrooms", {
     "type": "geojson",
-    "data": test
+    "data": allBathrooms
 });
 
 map.addLayer({
