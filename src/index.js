@@ -1,7 +1,10 @@
-"use strict";
+// "use strict";
 
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0aGx1IiwiYSI6ImNqZTRrOGljMjR6MmQycG11dzJhNGV4aGEifQ.gyYTYNhFfNV40_tnvS8CZA';
+console.log(mapkey);
+
+
+mapboxgl.accessToken = mapkey;
 
 let state = {
     currLat: undefined,
