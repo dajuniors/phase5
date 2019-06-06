@@ -77,7 +77,7 @@ function onErrorCurrentPos(error) {
 
 
 var allCheckboxes = document.querySelectorAll("input[type=checkbox]");
-var allRestrooms = Array.from(document.querySelectorAll(".list-group-item list-group-flush flex-column align-items-start"));
+var allRestrooms = Array.from(document.querySelectorAll(".list-group-item"));
 var checked = {};
 
 getChecked("gender");
@@ -129,7 +129,7 @@ function setVisibility() {
 // send requests to mapbox API
 function getRoute(end) {
     var start = [state.currLog, state.currLat];
-    var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken; 
+    var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
     fetch(url)
         .then(handleResponse)
         .then(renderInstructions)
@@ -139,10 +139,10 @@ function getRoute(end) {
 function renderInstructions(data) {
     var routes = data.routes[0]
     var instructions = document.getElementById('instructions');
-    instructions.style.backgroundColor = "rgba(255, 255, 255, 0.7)"; 
+    instructions.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
 
     var steps = routes.legs[0].steps;
-    
+
     var tripInstructions = [];
     for (var i = 0; i < steps.length; i++) {
         tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) + '</li>';
@@ -158,7 +158,7 @@ function renderInstructions(data) {
           coordinates: routes.geometry.coordinates
         }
     }
-    
+
     if (map.getSource('route')) {
         map.getSource('route').setData(geojson)
     }
@@ -188,7 +188,7 @@ function renderInstructions(data) {
     })
 }
 
-/* 
+/*
 function addMarker(record) {
     let elem = document.createElement("div");
     elem.className = "data-marker"
@@ -201,7 +201,7 @@ function addMarker(record) {
 
     let popup = new mapboxgl.Popup();
     let avgCost = " Average price for two: $" + record.average_cost_for_two;
-    let cuisine = " Cuisines: " + record.cuisines; 
+    let cuisine = " Cuisines: " + record.cuisines;
     let innerHTML = "";
     innerHTML += '<h6>' + record.name + "</h6>";
     if(record.featured_image) {
@@ -211,7 +211,7 @@ function addMarker(record) {
     innerHTML += '<p>' + avgCost + '</p>';
     if(record.menu_url) {
         innerHTML += '<a href=' + record.menu_url + '" target="_blank">Menu</a>';
-    }   
+    }
     popup.setHTML(innerHTML);
     marker.setPopup(popup);
 }
