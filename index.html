@@ -11,6 +11,13 @@
     <title>Page</title>
 </head>
 <body>
+        <h2>Popup</h2>
+
+        <div class="popup" onclick="myFunction()">Click me to toggle the popup!
+            <span class="popuptext" id="myPopup">A Simple Popup!</span>
+        </div>
+
+
     <div class="sidenav">
         <div class="container text-center" id="logo">
             <h1>OneRestroomAway</h1>
@@ -44,10 +51,10 @@
         <div class="col-md-6 col-lg-4 mt-3"></div>
 
         <a class="list-group">
-            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+            <button class="list-group-item list-group-flush flex-column align-items-start card_btn" onclick="myFunction()">
                 <div>
                     <div class="d-flex w-100 justify-content-between">
-                        <h1 class="mb-1">Mary Gates Hall &ensp;</h1>
+                        <h1 class="mb-1" id='test'>Mary Gates Hall &ensp;</h1>
                         <small>368 ft </small>
                     </div>
                     <div class="d-flex w-100 justify-content-between">
@@ -153,5 +160,6 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
     <!-- our script file -->
     <script src="src/index.js"></script>
+    <script src='js/popup.js'></script>
 </body>
 </html>
