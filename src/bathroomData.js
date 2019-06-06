@@ -1,37 +1,51 @@
 var db = firebase.firestore();
 
-// Add a new document in collection "cities"
-// db.collection("cities").doc("LA").set({
-//     name: "Los Angeles",
-//     state: "CA",
-//     country: "USA"
-// })
-// .then(function() {
-//     console.log("Document successfully written!");
-// })
-// .catch(function(error) {
-//     console.error("Error writing document: ", error);
-// });test.firestore.js
-
-// var docRef = db.collection("Bathrooms");
-
-// console.log("Document data:", docRef)
-
-// docRef.get().then(function(doc) {
-//     if (doc.exists) {
-//         console.log("Document data:", doc.data());
-//     } else {
-//         // doc.data() will be undefined in this case
-//         console.log("No such document!");
-//     }
-// }).catch(function(error) {
-//     console.log("Error getting document:", error);
-// });
-
 db.collection("Bathrooms").get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        
+
+        
+        console.log(
+            //doc.id, " => ", doc.data()
+            "hi"
+            );
     });
 });
 
+    let test = {
+        "type": "FeatureCollection", "features": [
+            {"type": "Feature", 
+            "properties": {"name": "Mary Gates", "disability":false}, 
+            "geometry":{"type":"Point","coordinates":[-122.3080377, 47.654979]}},
+
+            {"type": "Feature", 
+            "properties": {"name": "CSE", "disability":false}, 
+            "geometry":{"type":"Point","coordinates":[-122.3080377, 47.654979]}}
+
+        ]
+    }
+
+    console.log(test);
+
+
+
+    /*
+                let obj = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [long, lat]
+                },
+                "properties": {
+                    "name": name,
+                    "bioguide_id": id,
+                    "type": (type == "rep") ? "representative" : (type == "sen") ? "senator" : (type == "delegate") ? "delegate" : "Resident Commissioner",
+                    "party": party,
+                    "end": end,
+                    "stateabb": stateabb,
+                    "stateName": stateName,
+                    "url": url,
+                    "color": (party == "Democrat") ? "#0033cc" : (party == "Republican") ? "#ff0000" : "#ffffff"
+                }
+            }
+    */

@@ -37,20 +37,40 @@ map.addControl(new mapboxgl.NavigationControl());
 navigator.geolocation.getCurrentPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
 
 function onCurrentPos(position) {
-    console.log(position);
     let lnglat = [position.coords.longitude, position.coords.latitude];
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
-    console.log(state.currLat);
     map.flyTo({center: lnglat, zoom: 18});
 
     let div = document.createElement("div");
     div.className = "current-location-marker";
     let marker = new mapboxgl.Marker(div);
     marker.setLngLat(lnglat).addTo(map);
-    fetchData();
 
 }
+
+map.on('load', function () {
+map.addSource("bathrooms", {
+    "type": "geojson",
+    "data": test
+});
+
+map.addLayer({
+    "id": "testing",
+    "type": "circle",
+    "source": "bathrooms",
+    "paint": {
+        "circle-radius": 6,
+        "circle-color": '#1000ff',
+        'circle-stroke-color': '#000000',
+        'circle-stroke-width': 2
+    }
+});
+console.log("test")
+console.log("t: ", test);
+});
+
+
 
 function onErrorCurrentPos(error) {
     console.error(error);
@@ -117,3 +137,4 @@ function setVisibility() {
     }
   });
 }
+
