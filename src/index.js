@@ -113,7 +113,7 @@ function getRoute(end) {
         .then(renderInstructions)
 
 }
-  
+
 function renderInstructions(data) {
     var routes = data.routes[0]
     var instructions = document.getElementById('instructions');
@@ -165,3 +165,32 @@ function renderInstructions(data) {
         }
     })
 }
+
+/* 
+function addMarker(record) {
+    let elem = document.createElement("div");
+    elem.className = "data-marker"
+    elem.textContent = record.user_rating.aggregate_rating;
+    elem.style.backgroundColor = "#" + record.user_rating.rating_color;
+    let marker = new mapboxgl.Marker(elem);
+    let lnglat = [record.location.longitude, record.location.latitude];
+    marker.setLngLat(lnglat);
+    marker.addTo(map);
+
+    let popup = new mapboxgl.Popup();
+    let avgCost = " Average price for two: $" + record.average_cost_for_two;
+    let cuisine = " Cuisines: " + record.cuisines; 
+    let innerHTML = "";
+    innerHTML += '<h6>' + record.name + "</h6>";
+    if(record.featured_image) {
+        innerHTML += '<img class="popup-img" src="' + record.featured_image + '" alt="restraunt featured img" />';
+    }
+    innerHTML += '<p>' + cuisine + '</p>';
+    innerHTML += '<p>' + avgCost + '</p>';
+    if(record.menu_url) {
+        innerHTML += '<a href=' + record.menu_url + '" target="_blank">Menu</a>';
+    }   
+    popup.setHTML(innerHTML);
+    marker.setPopup(popup);
+}
+*/
