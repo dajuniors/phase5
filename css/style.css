@@ -6,7 +6,6 @@
 .full-page {
     height:100vh;
     width:100%;
-    background-image: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.2)), url('../img/header.jpg');
     background-size: cover;
     z-index: 2;
     display: flex;
@@ -27,7 +26,6 @@
     width: 1rem;
     height: 1rem;
 }
-
 
 
 hr {
@@ -127,6 +125,7 @@ hr {
     text-align: right;
 }
 
+<<<<<<< HEAD
 
 
 
@@ -175,3 +174,22 @@ hr {
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
   }
+=======
+/* temporary for directions */
+#instructions {
+    position: absolute;
+    margin: 20px;
+    width: 25%;
+    top: 0;
+    bottom: 65%;
+    padding: 20px;
+    overflow-y: scroll;
+    font-family: sans-serif;
+    font-size: 0.8em;
+    line-height: 2em;
+  }
+
+.duration {
+    font-size: 2em;
+}
+>>>>>>> 9ce9a1ec3fb6c94517aee866b663dee8b1649386
