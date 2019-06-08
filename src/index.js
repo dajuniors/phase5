@@ -135,14 +135,15 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       // add new card to card list
       //cards.appendChild(spacing)
       cards.appendChild(newCard)
+
+      let location = currProp
+      console.log(location)
       
       // add spacing between the cards
       let spacing = document.createElement('div');
       spacing.className = 'col-md-6 col-lg-4 mt-3'
       cards.appendChild(spacing)
     }
-
-
 });
 
 });
