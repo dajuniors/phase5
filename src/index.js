@@ -84,7 +84,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       
       let gender = currProp.gender;
       let key = currProp.needKey;
-      let da = currProp.disailityAccess;
+      let da = currProp.disabilityAccess;
 
       if (key) {
         let newK = document.createElement('img');
@@ -94,7 +94,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       }
       if (da) {
         let newDA = document.createElement('img');
-        newK.src = 'imgs/wc_24.png';
+        newDA.src = 'imgs/wc_24.png';
         divIcons.appendChild(newDA);
         newCardClass += ' dis';
       }
@@ -144,21 +144,23 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       divOut.appendChild(div1);
       divOut.appendChild(div2);
       
-      
       newCard.className = newCardClass
       newCard.appendChild(divOut);
+
+      // add spacing between the cards
+      let spacing = document.createElement('div');
+      spacing.className = 'col-md-6 col-lg-4 mt-3'
 
       // add new card to card list
       //cards.appendChild(spacing)
       cards.appendChild(newCard)
-
-      let location = currProp
-      console.log(location)
-      
-      // add spacing between the cards
-      let spacing = document.createElement('div');
-      spacing.className = 'col-md-6 col-lg-4 mt-3'
       cards.appendChild(spacing)
+
+      //let location = currProp
+      //console.log(location)
+      
+      
+      //cards.appendChild(spacing)
     }
 });
 
