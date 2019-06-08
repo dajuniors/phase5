@@ -139,18 +139,21 @@ function getRoute(end) {
 
 function renderInstructions(data) {
     var routes = data.routes[0]
-    var instructions = document.getElementById('instructions');
-    instructions.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+    var el = document.getElementById('cards');
+    el.innerHTML = "";
+    el.style.backgroundColor = "white"
 
     var steps = routes.legs[0].steps;
 
     var tripInstructions = [];
+    var filters = document.getElementById('filter')
+      filters.parentNode.removeChild(filters);
+
     for (var i = 0; i < steps.length; i++) {
-        tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) + '</li>';
-        instructions.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(routes.duration / 60) + ' min </span>' + tripInstructions;
+        tripInstructions.push('<br><li class="list-group-item list-group-flush flex-column align-items-start card_btn">' + steps[i].maneuver.instruction) + '</li>';
+        el.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(routes.duration / 60) + ' min </span>' + tripInstructions;
     }
 
-    //TODO: when a new location is chosen, reset the data to render a new line
     var geojson = {
         type: 'Feature',
         properties: {},
@@ -161,33 +164,41 @@ function renderInstructions(data) {
     }
 
     if (map.getSource('route')) {
-        map.getSource('route').setData(geojson)
-    }
-    map.addLayer({
-        "id": "route",
-        "type": "line",
-        "source": {
-          "type": "geojson",
-          "data": {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-              "type": "LineString",
-              "coordinates": routes.geometry.coordinates
+      map.getSource('route').setData(geojson)
+    } else {
+      map.addLayer({
+          "id": "route",
+          "type": "line",
+          "source": {
+            "type": "geojson",
+            "data": {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "LineString",
+                "coordinates": routes.geometry.coordinates
+              }
             }
+          },
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          "paint": {
+            "line-color": "#3887be",
+            "line-width": 5,
+            "line-opacity": 0.75
           }
-        },
-        "layout": {
-          "line-join": "round",
-          "line-cap": "round"
-        },
-        "paint": {
-          "line-color": "#3887be",
-          "line-width": 5,
-          "line-opacity": 0.75
-        }
-    })
+      })
+  }
 }
+
+function endDirections() {
+  map.removeLayer('route');
+  map.removeSource('route');
+
+}
+
 
 /*
 function addMarker(record) {
