@@ -96,7 +96,7 @@ hr {
 
 .filter ul {
     list-style-type: none;
-    width: 100%;
+    width: auto;
     display: table;
     table-layout: fixed;
 }
@@ -135,7 +135,7 @@ hr {
     -ms-user-select: none;
     user-select: none;
   }
-  
+
   /* The actual popup */
   .popup .popuptext {
     visibility: hidden;
@@ -151,7 +151,7 @@ hr {
     left: 50%;
     margin-left: -80px;
   }
-  
+
   /* Popup arrow */
   .popup .popuptext::after {
     content: "";
@@ -163,7 +163,7 @@ hr {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
   }
-  
+
   /* Toggle this class - hide and show the popup */
   .popup .show {
     visibility: visible;
