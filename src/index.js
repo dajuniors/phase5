@@ -78,6 +78,9 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       newP.textContent = 'LOCATION'
 
       let divIcons = document.createElement('div');
+
+      let newCard = document.createElement("button");
+      let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn"
       
       let gender = currProp.gender;
       let key = currProp.needKey;
@@ -87,21 +90,27 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
         let newK = document.createElement('img');
         newK.src = 'imgs/key_24.png';
         divIcons.appendChild(newK);
+        newCardClass += ' key';
       }
       if (da) {
         let newDA = document.createElement('img');
-        newK.src = 'imgs/wc_24.png'
+        newK.src = 'imgs/wc_24.png';
         divIcons.appendChild(newDA);
+        newCardClass += ' dis';
       }
       let newG = document.createElement('img');
       if (gender == "m") {
         newG.src = 'imgs/m_24.png';
+        newCardClass += ' male';
       } else if (gender == "f") {
         newG.src = 'imgs/f_24.png';
+        newCardClass += ' female';
       } else if (gender == "mf") {
         newG.src = 'imgs/mf_24.png';
+        newCardClass += ' male female';
       } else {
         newG.src = 'imgs/gn_24.png';
+        newCardClass += ' gn'
       }
       divIcons.appendChild(newG);
 
@@ -121,6 +130,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       if (state.currLat != null && state.currLog != null) {
         let distancebtwn = distance(bathroomCoord);
         newSm.textContent = distancebtwn;
+      } else {
+        newSm.textContent = "";
       }
 
       let div1 = document.createElement('div');
@@ -134,8 +145,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       divOut.appendChild(div2);
       
       
-      let newCard = document.createElement("button");
-      newCard.className = "list-group-item male female dis key list-group-flush flex-column align-items-start card_btn"
+      newCard.className = newCardClass
       newCard.appendChild(divOut);
 
       // add new card to card list
