@@ -104,23 +104,70 @@ function getChecked(name) {
 }
 
 function setVisibility() {
-  allRestrooms.map(function(el) {
-    var gender = checked.gender.length
-      ? _.intersection(Array.from(el.classList), checked.gender)
-          .length
-      : true;
-    var disability = checked.dis.length
-      ? _.intersection(Array.from(el.classList), checked.dis).length
-      : true;
-    var key = checked.key.length
-      ? _.intersection(Array.from(el.classList), checked.key).length
-      : true;
-    if (gender && disability && key) {
-      el.style.display = "block";
-    } else {
-      el.style.display = "none";
-    }
-  });
+  // allRestrooms.map(function(el) {
+    // var gender;
+    // var disability;
+    // var key;
+    // if (checked.gender.length == intersect(Array.from(el.classList), checked.gender).length) {
+      // gender = true;
+    // }
+    // if (checked.gender.length == intersect(Array.from(el.classList), checked.dis).length) {
+      // disability = true;
+    // }
+    // if (checked.gender.length == intersect(Array.from(el.classList), checked.key).length) {
+      // key = true;
+    // }
+    // if (gender && disability && key) {
+      // el.style.display = "block";
+    // } else {
+      // el.style.display = "none";
+    // }
+  // });
+  let male = false;
+  let female = false;
+  let gender = false;
+  let disability = false;
+  let key = false;
+  let checked = document.querySelectorAll("input:checked")
+  for (let i = 0; i < checked.length; i++) {
+	  let val = checked[i].value;
+	  if (val == "male")
+		  male = true
+	  if (val == "female")
+		  female = true
+	  if (val == "gn")
+		  gender = true
+	  if (val == "dis")
+		  disability = true
+	  if (val == "key")
+		  key = true
+  }
+  var restrooms = document.querySelectorAll(".list-group-item");
+  if (!male && !female && !gender && !disability && !key) {
+	  for (let i = 0; i < restrooms.length; i++)
+		  restrooms[i].style.display = "block";
+  } else {
+	  for (let i = 0; i < restrooms.length; i++) {
+		  restrooms[i].style.display = "none";
+		  let clist = restrooms[i].classList;
+		  if (male && clist.contains("male")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (female && clist.contains("female")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (gender && clist.contains("gn")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (disability && clist.contains("dis")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (key && clist.contains("key")) {
+			restrooms[i].style.display = "block";
+		  }
+	  }
+  }
+
 }
 
 
@@ -140,18 +187,21 @@ function getRoute(end) {
 
 function renderInstructions(data) {
     var routes = data.routes[0]
-    var instructions = document.getElementById('instructions');
-    instructions.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+    var el = document.getElementById('cards');
+    el.innerHTML = "";
+    el.style.backgroundColor = "white"
 
     var steps = routes.legs[0].steps;
 
     var tripInstructions = [];
+    var filters = document.getElementById('filter')
+      filters.parentNode.removeChild(filters);
+
     for (var i = 0; i < steps.length; i++) {
-        tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) + '</li>';
-        instructions.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(routes.duration / 60) + ' min </span>' + tripInstructions;
+        tripInstructions.push('<br><li class="list-group-item list-group-flush flex-column align-items-start card_btn">' + steps[i].maneuver.instruction) + '</li>';
+        el.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(routes.duration / 60) + ' min </span>' + tripInstructions;
     }
 
-    //TODO: when a new location is chosen, reset the data to render a new line
     var geojson = {
         type: 'Feature',
         properties: {},
@@ -162,32 +212,48 @@ function renderInstructions(data) {
     }
 
     if (map.getSource('route')) {
-        map.getSource('route').setData(geojson)
-    }
-    map.addLayer({
-        "id": "route",
-        "type": "line",
-        "source": {
-          "type": "geojson",
-          "data": {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-              "type": "LineString",
-              "coordinates": routes.geometry.coordinates
+      map.getSource('route').setData(geojson)
+    } else {
+      map.addLayer({
+          "id": "route",
+          "type": "line",
+          "source": {
+            "type": "geojson",
+            "data": {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "LineString",
+                "coordinates": routes.geometry.coordinates
+              }
             }
+          },
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          "paint": {
+            "line-color": "#3887be",
+            "line-width": 5,
+            "line-opacity": 0.75
           }
-        },
-        "layout": {
-          "line-join": "round",
-          "line-cap": "round"
-        },
-        "paint": {
-          "line-color": "#3887be",
-          "line-width": 5,
-          "line-opacity": 0.75
-        }
-    })
+      })
+  }
+}
+
+function endDirections() {
+  map.removeLayer('route');
+  map.removeSource('route');
+
+}
+
+
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        return b.indexOf(e) > -1;
+    });
 }
 
 /*

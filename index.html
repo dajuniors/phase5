@@ -11,11 +11,18 @@
     <title>Page</title>
 </head>
 <body>
+        <h2>Popup</h2>
+
+        <div class="popup" onclick="myFunction()">Click me to toggle the popup!
+            <span class="popuptext" id="myPopup">A Simple Popup!</span>
+        </div>
+
+
     <div class="sidenav">
         <div class="container text-center" id="logo">
             <h1>OneRestroomAway</h1>
         </div>
-        <div class="filter">
+        <div id="filter" class="filter">
           <ul>
             <li>
               <input type="checkbox" name="gender" id="male" value="male">
@@ -27,27 +34,26 @@
             </li>
             <li>
               <input type="checkbox" name="gender" id="gn" value="gn">
-              <label for="gn">Gender Neutral</label>
+              <label for="gn"><img src="gn_24.png"/></label>
             </li>
             <li>
               <input type="checkbox" name="dis" id="dis" value="dis">
-              <label for="dis">Disability Access</label>
+              <label for="dis"><img src="wc_24.png"/></label>
             </li>
             <li>
               <input type="checkbox" name="key" id="key" value="key">
-              <label for="key">Requires Key</label>
+              <label for="key"><img src="key_24.png"/></label>
             </li>
           </ul>
         </div>
-
-        <!-- spacing between cards -->
-        <div class="col-md-6 col-lg-4 mt-3"></div>
-
+        <div id="cards">
+            <!-- spacing between cards -->
+            <div class="col-md-6 col-lg-4 mt-3"></div>
         <a class="list-group">
-            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+            <button class="list-group-item male female dis key list-group-flush flex-column align-items-start card_btn" onclick="myFunction()">
                 <div>
                     <div class="d-flex w-100 justify-content-between">
-                        <h1 class="mb-1">Mary Gates Hall &ensp;</h1>
+                        <h1 class="mb-1" id='test'>Mary Gates Hall &ensp;</h1>
                         <small>368 ft </small>
                     </div>
                     <div class="d-flex w-100 justify-content-between">
@@ -56,6 +62,12 @@
                             <img src="imgs/access_w_24.png"/>
                             <img src="imgs/access_k_24.png"/>
                             <img src="imgs/access_g_24.png"/>
+                            <img src="wc_24.png"/>
+                            <img src="key_24.png"/>
+                            <img src="gn_24.png"/>
+                            <img src='m_24.png'/>
+                            <img src='f_24.png'/>
+                            <img src='mf_24.png'/>
                         </div>
                     </div>
                 </div>
@@ -95,13 +107,12 @@
                             <img src="imgs/access_g_24.png"/>
                         </div>
                     </div>
-                </div>
-            </button>
+                </button>
 
-            <!-- spacing between cards -->
-            <div class="col-md-6 col-lg-4 mt-3"></div>
+                <!-- spacing between cards -->
+                <div class="col-md-6 col-lg-4 mt-3"></div>
 
-            <button class="list-group-item list-group-flush flex-column align-items-start card_btn">
+                <button class="list-group-item male key list-group-flush flex-column align-items-start card_btn">
                 <div>
                     <div class="d-flex w-100 justify-content-between">
                         <h1 class="mb-1">Bagley Hall &ensp;</h1>
@@ -114,38 +125,37 @@
                             <img src="imgs/access_g_24.png"/>
                         </div>
                     </div>
-                </div>
-            </button>
+                </button>
 
-            <!-- spacing between cards -->
-            <div class="col-md-6 col-lg-4 mt-3"></div>
+                <!-- spacing between cards -->
+                <div class="col-md-6 col-lg-4 mt-3"></div>
 
-                <a class="list-group-item list-group-flush flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                        <h1 class="mb-1">Bathroom Name</h1>
-
-                        </div>
-                        <div class="text-muted">3 days ago</div>
-                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                        <small class="text-muted">Donec id elit non mi porta.</small>
-                    </a>
-
-                    <!-- spacing between cards -->
-            <div class="col-md-6 col-lg-4 mt-3"></div>
-
-                    <a class="list-group-item list-group-flush flex-column align-items-start">
+                    <a class="list-group-item female dis list-group-flush flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                             <h1 class="mb-1">Bathroom Name</h1>
-                            <small class="text-muted">3 days ago</small>
+
                             </div>
+                            <div class="text-muted">3 days ago</div>
                             <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
                             <small class="text-muted">Donec id elit non mi porta.</small>
                         </a>
-            </div>
 
-            <!-- spacing between cards -->
-            <div class="col-md-6 col-lg-4 mt-3"></div>
+                        <!-- spacing between cards -->
+                <div class="col-md-6 col-lg-4 mt-3"></div>
 
+                        <a class="list-group-item gn list-group-flush flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                <h1 class="mb-1">Bathroom Name</h1>
+                                <small class="text-muted">3 days ago</small>
+                                </div>
+                                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                                <small class="text-muted">Donec id elit non mi porta.</small>
+                            </a>
+                </div>
+
+                <!-- spacing between cards -->
+                <div class="col-md-6 col-lg-4 mt-3"></div>
+        </div>
 
     </div>
     <div id="map"></div>
@@ -157,5 +167,6 @@
     <script src="src/config.js"></script>
     <script src="src/bathroomData.js"></script>
     <script src="src/index.js"></script>
+    <script src='js/popup.js'></script>
 </body>
 </html>
