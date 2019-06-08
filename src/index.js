@@ -103,23 +103,70 @@ function getChecked(name) {
 }
 
 function setVisibility() {
-  allRestrooms.map(function(el) {
-    var gender = checked.gender.length
-      ? _.intersection(Array.from(el.classList), checked.gender)
-          .length
-      : true;
-    var disability = checked.dis.length
-      ? _.intersection(Array.from(el.classList), checked.dis).length
-      : true;
-    var key = checked.key.length
-      ? _.intersection(Array.from(el.classList), checked.key).length
-      : true;
-    if (gender && disability && key) {
-      el.style.display = "block";
-    } else {
-      el.style.display = "none";
-    }
-  });
+  // allRestrooms.map(function(el) {
+    // var gender;
+    // var disability;
+    // var key;
+    // if (checked.gender.length == intersect(Array.from(el.classList), checked.gender).length) {
+      // gender = true;
+    // }
+    // if (checked.gender.length == intersect(Array.from(el.classList), checked.dis).length) {
+      // disability = true;
+    // }
+    // if (checked.gender.length == intersect(Array.from(el.classList), checked.key).length) {
+      // key = true;
+    // }
+    // if (gender && disability && key) {
+      // el.style.display = "block";
+    // } else {
+      // el.style.display = "none";
+    // }
+  // });
+  let male = false;
+  let female = false;
+  let gender = false;
+  let disability = false;
+  let key = false;
+  let checked = document.querySelectorAll("input:checked")
+  for (let i = 0; i < checked.length; i++) {
+	  let val = checked[i].value;
+	  if (val == "male")
+		  male = true
+	  if (val == "female")
+		  female = true
+	  if (val == "gn")
+		  gender = true
+	  if (val == "dis")
+		  disability = true
+	  if (val == "key")
+		  key = true
+  }
+  var restrooms = document.querySelectorAll(".list-group-item");
+  if (!male && !female && !gender && !disability && !key) {
+	  for (let i = 0; i < restrooms.length; i++)
+		  restrooms[i].style.display = "block";
+  } else {
+	  for (let i = 0; i < restrooms.length; i++) {
+		  restrooms[i].style.display = "none";
+		  let clist = restrooms[i].classList;
+		  if (male && clist.contains("male")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (female && clist.contains("female")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (gender && clist.contains("gn")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (disability && clist.contains("dis")) {
+			restrooms[i].style.display = "block";
+		  }
+		  if (key && clist.contains("key")) {
+			restrooms[i].style.display = "block";
+		  }
+	  }
+  }
+
 }
 
 
@@ -199,6 +246,14 @@ function endDirections() {
 
 }
 
+
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        return b.indexOf(e) > -1;
+    });
+}
 
 /*
 function addMarker(record) {
