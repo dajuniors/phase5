@@ -171,12 +171,36 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 // from site
 map.on('click', 'testing', function (e) {
   console.log('hello')
-  var coordinates = e.features[0].geometry.coordinates.slice();
+  var data = e.features[0]
+  var coordinates = data.geometry.coordinates.slice();
 
   // create html for popup
-  let btn = document.createElement('button');
-  btn.textContent = 'test';
-  var description = e.features[0].properties.name
+  let test = '<p>' + data.properties.name + '</p>';
+  test += ' <p> Distance: </p>';
+  test += ' <button> Get Directions </button>';
+  
+  let test3 = ' <p> DISABILITY ACCESS: NO </p>';
+  if (data.properties.disabilityAccess) {
+    test3 = ' <p> DISABILITY ACCESS: YES </p>';
+  }
+  test += test3;
+  
+  let test4 = ' <p> KEY REQUIRED: NO </p>';
+  if (data.properties.disabilityAccess) {
+    test4 = ' <p> KEY REQUIRED: YES </p>';
+  }
+  test += test4;
+
+  let test5 = ' <p> GENDER NEUTRAL </p>';
+  if (data.properties.gender == "m") {
+    test5 = ' <p> MALE </p>';
+  } else if (data.properties.gender == "f") {
+    test5 = ' <p> FEMALE </p>';
+  } else if (data.properties.gender == "mf") {
+    test5 = ' <p> MALE AND FEMALE </p>';
+  }
+  test += test5;
+
    
   // Ensure that if the map is zoomed out such that multiple
   // copies of the feature are visible, the popup appears
@@ -187,7 +211,7 @@ map.on('click', 'testing', function (e) {
 
   new mapboxgl.Popup()
   .setLngLat(coordinates)
-  .setHTML(description)
+  .setHTML(test)
   .addTo(map);
   });
 
