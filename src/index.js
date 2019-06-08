@@ -46,7 +46,7 @@ function onCurrentPos(position) {
 }
 
 
-map.loadImage("https://img.icons8.com/color/48/000000/marker.png", function(error, image) {
+map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
     if (error) throw error;
     map.addImage('marker', image);
 
@@ -55,7 +55,6 @@ map.loadImage("https://img.icons8.com/color/48/000000/marker.png", function(erro
         "type": "geojson",
         "data": allBathrooms
     });
-    
     
     map.addLayer({
         "id": "testing",
@@ -67,6 +66,83 @@ map.loadImage("https://img.icons8.com/color/48/000000/marker.png", function(erro
             "icon-allow-overlap": true
         }
     });
+
+    // code for inserting cards into the side panel
+    let cards = document.getElementById('cardStack');
+    for (i = 0; i < allBathrooms.features.length; i++) {
+      let currProp = allBathrooms.features[i].properties
+      
+      let newP = document.createElement('p');
+      newP.className = 'mb-1';
+      newP.textContent = 'LOCATION'
+
+      let divIcons = document.createElement('div');
+      
+      let gender = currProp.gender;
+      let key = currProp.needKey;
+      let da = currProp.disailityAccess;
+
+      if (key) {
+        let newK = document.createElement('img');
+        newK.src = 'imgs/key_24.png';
+        divIcons.appendChild(newK);
+      }
+      if (da) {
+        let newDA = document.createElement('img');
+        newK.src = 'imgs/wc_24.png'
+        divIcons.appendChild(newDA);
+      }
+      let newG = document.createElement('img');
+      if (gender == "m") {
+        newG.src = 'imgs/m_24.png';
+      } else if (gender == "f") {
+        newG.src = 'imgs/f_24.png';
+      } else if (gender == "mf") {
+        newG.src = 'imgs/mf_24.png';
+      } else {
+        newG.src = 'imgs/gn_24.png';
+      }
+      divIcons.appendChild(newG);
+
+
+      let div2 = document.createElement('div');
+      div2.className = 'd-flex w-100 justify-content-between';
+      div2.appendChild(newP);
+      div2.appendChild(divIcons);
+
+
+      let newH = document.createElement('h1');
+      newH.className = 'mb-1';
+      newH.textContent = currProp.name;
+      let newSm = document.createElement('small');
+      newSm.textContent = 'DISTANCE'
+
+      let div1 = document.createElement('div');
+      div1.className = 'd-flex w-100 justify-content-between';
+
+      div1.appendChild(newH);
+      div1.appendChild(newSm);
+
+      let divOut = document.createElement("div");
+      divOut.appendChild(div1);
+      divOut.appendChild(div2);
+      
+      
+      let newCard = document.createElement("button");
+      newCard.className = "list-group-item male female dis key list-group-flush flex-column align-items-start card_btn"
+      newCard.appendChild(divOut);
+
+      // add new card to card list
+      //cards.appendChild(spacing)
+      cards.appendChild(newCard)
+      
+      // add spacing between the cards
+      let spacing = document.createElement('div');
+      spacing.className = 'col-md-6 col-lg-4 mt-3'
+      cards.appendChild(spacing)
+    }
+
+
 });
 
 });
@@ -244,7 +320,6 @@ function renderInstructions(data) {
 function endDirections() {
   map.removeLayer('route');
   map.removeSource('route');
-
 }
 
 
@@ -255,6 +330,12 @@ function intersect(a, b) {
         return b.indexOf(e) > -1;
     });
 }
+
+// let test = allBathrooms.features
+
+// console.log(test)
+// console.log(test[[0]].properties)
+
 
 /*
 function addMarker(record) {
