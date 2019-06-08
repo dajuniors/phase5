@@ -71,6 +71,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
     let cards = document.getElementById('cardStack');
     for (i = 0; i < allBathrooms.features.length; i++) {
       let currProp = allBathrooms.features[i].properties
+      let bathroomCoord = allBathrooms.features[i].geometry.coordinates
       
       let newP = document.createElement('p');
       newP.className = 'mb-1';
@@ -115,7 +116,12 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       newH.className = 'mb-1';
       newH.textContent = currProp.name;
       let newSm = document.createElement('small');
-      newSm.textContent = 'DISTANCE'
+      
+      // if user provides location, calculate and display distance on card
+      if (state.currLat != null && state.currLog != null) {
+        let distancebtwn = distance(bathroomCoord);
+        newSm.textContent = distancebtwn;
+      }
 
       let div1 = document.createElement('div');
       div1.className = 'd-flex w-100 justify-content-between';
@@ -259,7 +265,6 @@ function getRoute(end) {
     fetch(url)
         .then(handleResponse)
         .then(renderInstructions)
-
 }
 
 function renderInstructions(data) {
@@ -272,7 +277,7 @@ function renderInstructions(data) {
 
     var tripInstructions = [];
     var filters = document.getElementById('filter')
-      filters.parentNode.removeChild(filters);
+    filters.innerHTML = "";
 
     for (var i = 0; i < steps.length; i++) {
         tripInstructions.push('<br><li class="list-group-item list-group-flush flex-column align-items-start card_btn">' + steps[i].maneuver.instruction) + '</li>';
@@ -330,6 +335,36 @@ function intersect(a, b) {
     return a.filter(function (e) {
         return b.indexOf(e) > -1;
     });
+}
+
+// Source of distance function code: https://www.geodatasource.com/developers/javascript
+
+// calculates distance in miles between user current location and bathroom
+// takes in bathroom coordinates as a parameter
+function distance(bathroom) {
+	if ((state.currLat == bathroom[0]) && (state.currLog == bathroom[1])) {
+		return 0;
+	}
+	else {
+		var radlat1 = Math.PI * state.currLat/180;
+		var radlat2 = Math.PI * bathroom[1]/180;
+		var theta = state.currLog-bathroom[0];
+		var radtheta = Math.PI * theta/180;
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+		}
+		dist = Math.acos(dist);
+		dist = dist * 180/Math.PI;
+    dist = dist * 60 * 1.1515;
+    
+    // if distance is less than 0.1 miles, convert distance to feet
+    if (dist <= 0.1) {
+      dist = dist * 5280;
+      return dist.toFixed(2) + " feet";
+    } 
+    return dist.toFixed(2) + " miles";
+	}
 }
 
 // let test = allBathrooms.features
