@@ -166,9 +166,6 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
 });
 
-
-
-// from site
 map.on('click', 'testing', function (e) {
   console.log('hello')
   var data = e.features[0]
@@ -177,7 +174,7 @@ map.on('click', 'testing', function (e) {
   // create html for popup
   let test = '<p>' + data.properties.name + '</p>';
   test += ' <p> Distance: </p>';
-  test += ' <button> Get Directions </button>';
+  test += ' <button oncli> Get Directions </button>';
   
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
