@@ -1,9 +1,4 @@
 // "use strict";
-
-
-console.log(mapkey);
-
-
 mapboxgl.accessToken = mapkey;
 
 let state = {
@@ -50,24 +45,30 @@ function onCurrentPos(position) {
     marker.setLngLat(lnglat).addTo(map);
 }
 
-map.addSource("bathrooms", {
-    "type": "geojson",
-    "data": allBathrooms
+
+map.loadImage("https://img.icons8.com/color/48/000000/marker.png", function(error, image) {
+    if (error) throw error;
+    map.addImage('marker', image);
+
+
+    map.addSource("bathrooms", {
+        "type": "geojson",
+        "data": allBathrooms
+    });
+    
+    
+    map.addLayer({
+        "id": "testing",
+        "type": "symbol",
+        "source": "bathrooms",
+        "layout": {
+            "icon-image": "marker",
+            "icon-size": 1,
+            "icon-allow-overlap": true
+        }
+    });
 });
 
-map.addLayer({
-    "id": "testing",
-    "type": "circle",
-    "source": "bathrooms",
-    "paint": {
-        "circle-radius": 6,
-        "circle-color": '#1000ff',
-        'circle-stroke-color': '#000000',
-        'circle-stroke-width': 2
-    }
-});
-console.log("test")
-console.log("t: ", allBathrooms);
 });
 
 

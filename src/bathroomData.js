@@ -19,8 +19,7 @@ db.collection("Bathrooms").get().then(function(querySnapshot) {
                 "name": doc.id,
                 "gender": test.gender,
                 "needKey": test.key,
-                "disabilityAccess": test.disabilityAccess,
-                "floor": test.floor
+                "disabilityAccess": test.da
             }
         }
 
