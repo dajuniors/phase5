@@ -166,8 +166,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
 });
 
+// popup on map
 map.on('click', 'testing', function (e) {
-  console.log('hello')
   var data = e.features[0]
   var coordinates = data.geometry.coordinates.slice();
 
