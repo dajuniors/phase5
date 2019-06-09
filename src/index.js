@@ -443,6 +443,7 @@ function addMarker(record) {
     popup.setHTML(innerHTML);
     marker.setPopup(popup);
 // Source of distance function code: https://www.geodatasource.com/developers/javascript
+*/
 
 // calculates distance in miles between user current location and bathroom
 // takes in bathroom coordinates as a parameter
@@ -517,4 +518,3 @@ function markerPopUpFromCard() {
 
 // console.log(test)
 // console.log(test[[0]].properties)
-*/
