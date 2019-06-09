@@ -87,7 +87,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
       let newP = document.createElement('p');
       newP.className = 'mb-1';
-      newP.textContent = 'LOCATION'
+      newP.textContent = currProp.address;
 
       let divIcons = document.createElement('div');
 
@@ -547,6 +547,8 @@ function markerPopUpFromCard() {
   .setLngLat(coordinates)
   .setHTML(test)
   .addTo(map);
+
+
 
 }
 
