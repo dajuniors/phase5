@@ -35,14 +35,17 @@ navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHigh
 
 function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
+    if (state.currLat == null && state.currLog == null) {
+      let div = document.createElement("div");
+      div.className = "current-location-marker";
+      let marker = new mapboxgl.Marker(div);
+      marker.setLngLat(lnglat).addTo(map);
+    }
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
     map.flyTo({center: lnglat, zoom: 18});
-
-    let div = document.createElement("div");
-    div.className = "current-location-marker";
-    let marker = new mapboxgl.Marker(div);
-    marker.setLngLat(lnglat).addTo(map);
+    //zoom out a teeny bit
+    marker.setLngLat(lnglat);   
 }
 
 
@@ -153,7 +156,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
     });
     
     map.addLayer({
-        "id": "bathroom",
+        "id": "testing",
         "type": "symbol",
         "source": "bathrooms",
         "layout": {
@@ -414,35 +417,6 @@ function intersect(a, b) {
 
 
 
-/*
-function addMarker(record) {
-    let elem = document.createElement("div");
-    elem.className = "data-marker"
-    elem.textContent = record.user_rating.aggregate_rating;
-    elem.style.backgroundColor = "#" + record.user_rating.rating_color;
-    let marker = new mapboxgl.Marker(elem);
-    let lnglat = [record.location.longitude, record.location.latitude];
-    marker.setLngLat(lnglat);
-    marker.addTo(map);
-
-    let popup = new mapboxgl.Popup();
-    let avgCost = " Average price for two: $" + record.average_cost_for_two;
-    let cuisine = " Cuisines: " + record.cuisines;
-    let innerHTML = "";
-    innerHTML += '<h6>' + record.name + "</h6>";
-    if(record.featured_image) {
-        innerHTML += '<img class="popup-img" src="' + record.featured_image + '" alt="restraunt featured img" />';
-    }
-    innerHTML += '<p>' + cuisine + '</p>';
-    innerHTML += '<p>' + avgCost + '</p>';
-    if(record.menu_url) {
-        innerHTML += '<a href=' + record.menu_url + '" target="_blank">Menu</a>';
-    }
-    popup.setHTML(innerHTML);
-    marker.setPopup(popup);
-// Source of distance function code: https://www.geodatasource.com/developers/javascript
-*/
-
 // calculates distance in miles between user current location and bathroom
 // takes in bathroom coordinates as a parameter
 function distance(bathroom) {
@@ -477,9 +451,14 @@ function markerPopUpFromCard() {
   var coordinates = data.geometry.coordinates;
 
   // create html for popup
+
+  // if user provides location, display distance and get directions button
   let test = '<p>' + data.properties.name + '</p>';
-  test += ' <p> Distance: </p>';
-  test = test + ' <button onclick= "getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
+  if (state.currLat != null && state.currLog != null) {
+    let cord = distance(coordinates)
+    test += ' <p> Distance: '+ cord + '</p>';
+    test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
+  }
   
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
