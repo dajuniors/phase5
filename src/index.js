@@ -508,10 +508,10 @@ function distance(bathroom) {
     dist = dist * 60 * 1.1515;
 
     // if distance is less than 0.1 miles, convert distance to feet
-    if (dist <= 0.1) {
-      dist = dist * 5280;
-      return dist.toFixed(2) + " feet";
-    }
+    // if (dist <= 0.1) {
+    //   dist = dist * 5280;
+    //   return dist.toFixed(2) + " feet";
+    // }
     return dist.toFixed(2) + " miles";
 	}
 }
