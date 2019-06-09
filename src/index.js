@@ -5,6 +5,7 @@ let state = {
     currLat: undefined,
     currLog: undefined
 }
+
 /**
  * Handles responses from the fetch() API.
  * @param {Response} response
@@ -35,21 +36,20 @@ navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHigh
 
 function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
+    // the first time the user allows their location, create a marker and add to the map
+    // else: update the marker coordinates to be the updated position
     if (state.currLat == null && state.currLog == null) {
       let div = document.createElement("div");
       div.className = "current-location-marker";
       let marker = new mapboxgl.Marker(div);
       marker.setLngLat(lnglat).addTo(map);
+      map.flyTo({center: lnglat, zoom: 18});
+    } else {
+      marker.setLngLat(lnglat);
     }
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
-    map.flyTo({center: lnglat, zoom: 18});
     //zoom out a teeny bit
-    marker.setLngLat(lnglat);
-
-    
-
-
 }
 
 // functino to sort bathrooms
@@ -376,11 +376,44 @@ function setVisibility() {
 // pass in the coordinates for the end location
 // send requests to mapbox API
 function getRoute(end) {
-    var start = [state.currLog, state.currLat];
-    var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
-    fetch(url)
+    if (state.currLat == null && state.currLog == null) {
+      var el = document.getElementById('direction')
+      document.getElementById("direction").style.width = "30%";
+      let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
+      let button = '<h3 class="container" style="padding:1rem;"></div><button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button><h3>'
+      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div>'
+      el.innerHTML = header + button + form;
+    } else {
+      if (state.currLat != null && state.currLog != null) {
+        var start = [state.currLog, state.currLat];
+      }
+      var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+      fetch(url)
+          .then(handleResponse)
+          .then(renderInstructions)
+    }
+}
+
+function startCoords(end) {  
+  var address = document.getElementById('address');
+  let searchtext = address.value;
+  let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
+  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
+  fetch(url)
         .then(handleResponse)
-        .then(renderInstructions)
+        .then(data => {
+          let start = data.features[0].geometry.coordinates;
+          address2bathroom(start, end);
+        });
+}
+
+// find route between inputed starting point and bathroom
+// then render instructions
+function address2bathroom(start, end) {
+  var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+          fetch(url)
+              .then(handleResponse)
+              .then(renderInstructions);
 }
 
 function renderInstructions(data) {
@@ -437,8 +470,10 @@ function renderInstructions(data) {
 }
 
 function endDirections() {
-  map.removeLayer('route');
-  map.removeSource('route');
+  if (map.getSource('route')) {
+    map.removeLayer('route');
+    map.removeSource('route');
+  }  
   document.getElementById("direction").style.width = "0";
 }
 
@@ -473,10 +508,10 @@ function distance(bathroom) {
     dist = dist * 60 * 1.1515;
 
     // if distance is less than 0.1 miles, convert distance to feet
-    if (dist <= 0.1) {
-      dist = dist * 5280;
-      return dist.toFixed(2) + " feet";
-    }
+    // if (dist <= 0.1) {
+    //   dist = dist * 5280;
+    //   return dist.toFixed(2) + " feet";
+    // }
     return dist.toFixed(2) + " miles";
 	}
 }
