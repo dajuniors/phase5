@@ -34,7 +34,7 @@ map.on('load', function () {
 navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
 
 function onCurrentPos(position) {
-    let lnglat = [position.coords.longitude, position.coords.latitude];
+    let lnglat = [position.coords.longitude, position.coords.latitude];   
     if (state.currLat == null && state.currLog == null) {
       let div = document.createElement("div");
       div.className = "current-location-marker";
@@ -45,7 +45,7 @@ function onCurrentPos(position) {
     state.currLog = position.coords.longitude;
     map.flyTo({center: lnglat, zoom: 18});
     //zoom out a teeny bit
-    marker.setLngLat(lnglat);   
+    marker.setLngLat(lnglat);  
 }
 
 
@@ -184,9 +184,9 @@ map.on('click', 'testing', function (e) {
   if (state.currLat != null && state.currLog != null) {
     let cord = distance(coordinates)
     test += ' <p> Distance: '+ cord + '</p>';
-    test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
   }
   
+  test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
   
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
@@ -457,9 +457,11 @@ function markerPopUpFromCard() {
   if (state.currLat != null && state.currLog != null) {
     let cord = distance(coordinates)
     test += ' <p> Distance: '+ cord + '</p>';
-    test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
   }
-  
+
+  test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
+
+
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
     test3 = ' <p> DISABILITY ACCESS: YES </p>';
