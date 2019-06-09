@@ -34,7 +34,7 @@ map.on('load', function () {
 navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
 
 function onCurrentPos(position) {
-    let lnglat = [position.coords.longitude, position.coords.latitude];   
+    let lnglat = [position.coords.longitude, position.coords.latitude];
     if (state.currLat == null && state.currLog == null) {
       let div = document.createElement("div");
       div.className = "current-location-marker";
@@ -45,13 +45,13 @@ function onCurrentPos(position) {
     state.currLog = position.coords.longitude;
     map.flyTo({center: lnglat, zoom: 18});
     //zoom out a teeny bit
-    marker.setLngLat(lnglat);  
+    marker.setLngLat(lnglat);
 }
 
 
 map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
     if (error) throw error;
-    
+
     // code for inserting cards into the side panel
     let cards = document.getElementById('cardStack');
     for (i = 0; i < allBathrooms.features.length; i++) {
@@ -61,7 +61,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
       let currProp = allBathrooms.features[i].properties
       let bathroomCoord = allBathrooms.features[i].geometry.coordinates
-      
+
       let newP = document.createElement('p');
       newP.className = 'mb-1';
       newP.textContent = 'LOCATION'
@@ -70,7 +70,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
       let newCard = document.createElement("button");
       let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn"
-      
+
       let gender = currProp.gender;
       let key = currProp.needKey;
       let da = currProp.disabilityAccess;
@@ -120,7 +120,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       newH.className = 'mb-1';
       newH.textContent = currProp.name;
       let newSm = document.createElement('small');
-      
+
       // if user provides location, calculate and display distance on card
       if (state.currLat != null && state.currLog != null) {
         let distancebtwn = distance(bathroomCoord);
@@ -138,8 +138,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       let divOut = document.createElement("div");
       divOut.appendChild(div1);
       divOut.appendChild(div2);
-      
-      newCard.className = newCardClass  
+
+      newCard.className = newCardClass
       newCard.data = allBathrooms.features[i]
       newCard.appendChild(divOut);
 
@@ -152,8 +152,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       //cards.appendChild(spacing)
       cards.appendChild(newCard)
       cards.appendChild(spacing)
-      
-      
+
+
       //cards.appendChild(spacing)
     }
 
@@ -164,7 +164,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
         "type": "geojson",
         "data": allBathrooms
     });
-    
+
     map.addLayer({
         "id": "testing",
         "type": "symbol",
@@ -175,7 +175,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
             "icon-allow-overlap": true
         }
     });
-    
+
 });
 
 console.log(allBathrooms.features[[0]].properties);
@@ -186,7 +186,7 @@ console.log(allBathrooms.features[[0]].properties);
 map.on('click', 'testing', function (e) {
   var data = e.features[0]
   var coordinates = data.geometry.coordinates.slice();
-  
+
   // create html for popup
   let test = '<p>' + data.properties.name + '</p>';
 
@@ -195,15 +195,15 @@ map.on('click', 'testing', function (e) {
     let cord = distance(coordinates)
     test += ' <p> Distance: '+ cord + '</p>';
   }
-  
+
   test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
-  
+
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
     test3 = ' <p> DISABILITY ACCESS: YES </p>';
   }
   test += test3;
-  
+
   let test4 = ' <p> KEY REQUIRED: NO </p>';
   if (data.properties.disabilityAccess) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
@@ -220,7 +220,7 @@ map.on('click', 'testing', function (e) {
   }
   test += test5;
 
-   
+
   // Ensure that if the map is zoomed out such that multiple
   // copies of the feature are visible, the popup appears
   // over the copy being pointed to.
@@ -238,7 +238,7 @@ map.on('click', 'testing', function (e) {
 map.on('mouseenter', 'testing', function () {
   map.getCanvas().style.cursor = 'pointer';
   });
-   
+
   // Change it back to a pointer when it leaves.
   map.on('mouseleave', 'testing', function () {
   map.getCanvas().style.cursor = '';
@@ -324,19 +324,39 @@ function setVisibility() {
 		  restrooms[i].style.display = "none";
 		  let clist = restrooms[i].classList;
 		  if (male && clist.contains("male")) {
-			restrooms[i].style.display = "block";
+        restrooms[i].style.display = "block";
+        if ((female && !clist.contains("female")) || (gender && !clist.contains("gn")) ||
+            (disability && !clist.contains("dis")) || (key && !clist.contains("key"))) {
+              restrooms[i].style.display = "none";
+            }
 		  }
 		  if (female && clist.contains("female")) {
-			restrooms[i].style.display = "block";
+        restrooms[i].style.display = "block";
+        if ((male && !clist.contains("male")) || (gender && !clist.contains("gn")) ||
+            (disability && !clist.contains("dis")) || (key && !clist.contains("key"))) {
+              restrooms[i].style.display = "none";
+            }
 		  }
 		  if (gender && clist.contains("gn")) {
-			restrooms[i].style.display = "block";
+        restrooms[i].style.display = "block";
+        if ((female && !clist.contains("female")) || (male && !clist.contains("male")) ||
+            (disability && !clist.contains("dis")) || (key && !clist.contains("key"))) {
+              restrooms[i].style.display = "none";
+            }
 		  }
 		  if (disability && clist.contains("dis")) {
-			restrooms[i].style.display = "block";
+        restrooms[i].style.display = "block";
+        if ((female && !clist.contains("female")) || (gender && !clist.contains("gn")) ||
+            (male && !clist.contains("male")) || (key && !clist.contains("key"))) {
+              restrooms[i].style.display = "none";
+            }
 		  }
 		  if (key && clist.contains("key")) {
-			restrooms[i].style.display = "block";
+        restrooms[i].style.display = "block";
+        if ((female && !clist.contains("female")) || (gender && !clist.contains("gn")) ||
+            (disability && !clist.contains("dis")) || (male && !clist.contains("key"))) {
+              restrooms[i].style.display = "none";
+            }
 		  }
 	  }
   }
@@ -363,7 +383,7 @@ function renderInstructions(data) {
     document.getElementById("direction").style.width = "30%";
     var steps = routes.legs[0].steps;
     var tripInstructions = [];
- 
+
     for (var i = 0; i < steps.length; i++) {
         tripInstructions.push('<br><li class="list-group-item list-group-flush flex-column align-items-start card_btn">' + steps[i].maneuver.instruction) + '</li>';
         let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
@@ -445,12 +465,12 @@ function distance(bathroom) {
 		dist = Math.acos(dist);
 		dist = dist * 180/Math.PI;
     dist = dist * 60 * 1.1515;
-    
+
     // if distance is less than 0.1 miles, convert distance to feet
     if (dist <= 0.1) {
       dist = dist * 5280;
       return dist.toFixed(2) + " feet";
-    } 
+    }
     return dist.toFixed(2) + " miles";
 	}
 }
@@ -477,7 +497,7 @@ function markerPopUpFromCard() {
     test3 = ' <p> DISABILITY ACCESS: YES </p>';
   }
   test += test3;
-  
+
   let test4 = ' <p> KEY REQUIRED: NO </p>';
   if (data.properties.disabilityAccess) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
@@ -493,12 +513,12 @@ function markerPopUpFromCard() {
     test5 = ' <p> MALE AND FEMALE </p>';
   }
   test += test5;
-  
+
   new mapboxgl.Popup()
   .setLngLat(coordinates)
   .setHTML(test)
   .addTo(map);
-  
+
 }
 
 // let test = allBathrooms.features
