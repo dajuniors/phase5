@@ -58,7 +58,7 @@ map.loadImage("https://img.icons8.com/color/48/000000/marker.png", function(erro
     
     
     map.addLayer({
-        "id": "testing",
+        "id": "bathroom",
         "type": "symbol",
         "source": "bathrooms",
         "layout": {
@@ -69,7 +69,11 @@ map.loadImage("https://img.icons8.com/color/48/000000/marker.png", function(erro
     });
 });
 
+console.log(allBathrooms.features[[0]].properties);
+
 });
+
+console.log(allBathrooms);
 
 
 
@@ -255,6 +259,8 @@ function intersect(a, b) {
         return b.indexOf(e) > -1;
     });
 }
+
+
 
 /*
 function addMarker(record) {
