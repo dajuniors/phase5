@@ -46,6 +46,18 @@ function onCurrentPos(position) {
     map.flyTo({center: lnglat, zoom: 18});
     //zoom out a teeny bit
     marker.setLngLat(lnglat);
+
+    
+
+
+}
+
+// functino to sort bathrooms
+function sortByKey(array, key) {
+  return array.sort(function(a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  });
 }
 
 
@@ -53,14 +65,25 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
     if (error) throw error;
 
     // code for inserting cards into the side panel
-    let cards = document.getElementById('cardStack');
+    let diatanceBathrooms = [];
     for (i = 0; i < allBathrooms.features.length; i++) {
+      let currBathroom = allBathrooms.features[i];
+      let coordinates = currBathroom.geometry.coordinates.slice();
+      diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
+
+      //console.log(distance(coordinates))
+    }
+    let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
+    //console.log(sortedBathrooms)
+
+    let cards = document.getElementById('cardStack');
+    for (i = 0; i < sortedBathrooms.length; i++) {
 
       let spacing = document.createElement('div');
       let spacingClass = 'col-md-6 col-lg-4 mt-3 list-group-item'
 
-      let currProp = allBathrooms.features[i].properties
-      let bathroomCoord = allBathrooms.features[i].geometry.coordinates
+      let currProp = sortedBathrooms[i].data.properties
+      let bathroomCoord = sortedBathrooms[i].data.geometry.coordinates
 
       let newP = document.createElement('p');
       newP.className = 'mb-1';
@@ -123,7 +146,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
       // if user provides location, calculate and display distance on card
       if (state.currLat != null && state.currLog != null) {
-        let distancebtwn = distance(bathroomCoord);
+        //let distancebtwn = distance(bathroomCoord);
+        let distancebtwn = sortedBathrooms[i].id
         newSm.textContent = distancebtwn;
       } else {
         newSm.textContent = "";
@@ -140,7 +164,7 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       divOut.appendChild(div2);
 
       newCard.className = newCardClass
-      newCard.data = allBathrooms.features[i]
+      newCard.data = sortedBathrooms[i].data;
       newCard.appendChild(divOut);
 
       // add spacing between the cards
@@ -148,13 +172,10 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       spacing.className = spacingClass
 
       newCard.onclick = markerPopUpFromCard;
+
       // add new card to card list
-      //cards.appendChild(spacing)
       cards.appendChild(newCard)
       cards.appendChild(spacing)
-
-
-      //cards.appendChild(spacing)
     }
 
     map.addImage('marker', image);
