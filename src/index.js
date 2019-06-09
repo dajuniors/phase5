@@ -48,25 +48,7 @@ function onCurrentPos(position) {
 
 map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
     if (error) throw error;
-    map.addImage('marker', image);
-
-
-    map.addSource("bathrooms", {
-        "type": "geojson",
-        "data": allBathrooms
-    });
     
-    map.addLayer({
-        "id": "testing",
-        "type": "symbol",
-        "source": "bathrooms",
-        "layout": {
-            "icon-image": "marker",
-            "icon-size": 1,
-            "icon-allow-overlap": true
-        }
-    });
-
     // code for inserting cards into the side panel
     let cards = document.getElementById('cardStack');
     for (i = 0; i < allBathrooms.features.length; i++) {
@@ -144,24 +126,43 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       divOut.appendChild(div1);
       divOut.appendChild(div2);
       
-      newCard.className = newCardClass
+      newCard.className = newCardClass  
+      newCard.data = allBathrooms.features[i]
       newCard.appendChild(divOut);
 
       // add spacing between the cards
       let spacing = document.createElement('div');
       spacing.className = 'col-md-6 col-lg-4 mt-3'
 
+      newCard.onclick = markerPopUpFromCard;
       // add new card to card list
       //cards.appendChild(spacing)
       cards.appendChild(newCard)
       cards.appendChild(spacing)
-
-      //let location = currProp
-      //console.log(location)
       
       
       //cards.appendChild(spacing)
     }
+
+    map.addImage('marker', image);
+
+
+    map.addSource("bathrooms", {
+        "type": "geojson",
+        "data": allBathrooms
+    });
+    
+    map.addLayer({
+        "id": "testing",
+        "type": "symbol",
+        "source": "bathrooms",
+        "layout": {
+            "icon-image": "marker",
+            "icon-size": 1,
+            "icon-allow-overlap": true
+        }
+    });
+    
 });
 
 });
@@ -180,7 +181,8 @@ map.on('click', 'testing', function (e) {
     test += ' <p> Distance: '+ cord + '</p>';
     test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
   }
-    
+  
+  
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
     test3 = ' <p> DISABILITY ACCESS: YES </p>';
@@ -208,7 +210,7 @@ map.on('click', 'testing', function (e) {
   // copies of the feature are visible, the popup appears
   // over the copy being pointed to.
   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-  coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
   }
 
   new mapboxgl.Popup()
@@ -439,6 +441,47 @@ function distance(bathroom) {
     return dist.toFixed(2) + " miles";
 	}
 }
+
+function markerPopUpFromCard() {
+  var data = this.data;
+
+  var coordinates = data.geometry.coordinates;
+
+  // create html for popup
+  let test = '<p>' + data.properties.name + '</p>';
+  test += ' <p> Distance: </p>';
+  test = test + ' <button onclick= "getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
+  
+  let test3 = ' <p> DISABILITY ACCESS: NO </p>';
+  if (data.properties.disabilityAccess) {
+    test3 = ' <p> DISABILITY ACCESS: YES </p>';
+  }
+  test += test3;
+  
+  let test4 = ' <p> KEY REQUIRED: NO </p>';
+  if (data.properties.disabilityAccess) {
+    test4 = ' <p> KEY REQUIRED: YES </p>';
+  }
+  test += test4;
+
+  let test5 = ' <p> GENDER NEUTRAL </p>';
+  if (data.properties.gender == "m") {
+    test5 = ' <p> MALE </p>';
+  } else if (data.properties.gender == "f") {
+    test5 = ' <p> FEMALE </p>';
+  } else if (data.properties.gender == "mf") {
+    test5 = ' <p> MALE AND FEMALE </p>';
+  }
+  test += test5;
+  
+  new mapboxgl.Popup()
+  .setLngLat(coordinates)
+  .setHTML(test)
+  .addTo(map);
+  
+}
+
+
 
 // let test = allBathrooms.features
 
