@@ -548,6 +548,11 @@ function markerPopUpFromCard() {
   .setHTML(test)
   .addTo(map);
 
+  map.flyTo({
+    center: [
+    coordinates[0], 
+    coordinates[1]]
+  });
 
 
 }
