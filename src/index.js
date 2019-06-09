@@ -178,12 +178,12 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
 });
 
-console.log(allBathrooms.features[[0]].properties);
-
 });
 
 // popup on map
+var popup = new mapboxgl.Popup();
 map.on('click', 'testing', function (e) {
+
   var data = e.features[0]
   var coordinates = data.geometry.coordinates.slice();
 
@@ -220,7 +220,6 @@ map.on('click', 'testing', function (e) {
   }
   test += test5;
 
-
   // Ensure that if the map is zoomed out such that multiple
   // copies of the feature are visible, the popup appears
   // over the copy being pointed to.
@@ -228,21 +227,25 @@ map.on('click', 'testing', function (e) {
     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
   }
 
-  new mapboxgl.Popup()
+  popup.remove()
+
+  popup = new mapboxgl.Popup();
+
+  popup
   .setLngLat(coordinates)
   .setHTML(test)
   .addTo(map);
-  });
+});
 
-  // Change the cursor to a pointer when the mouse is over the places layer.
+// Change the cursor to a pointer when the mouse is over the places layer.
 map.on('mouseenter', 'testing', function () {
   map.getCanvas().style.cursor = 'pointer';
-  });
+});
 
-  // Change it back to a pointer when it leaves.
-  map.on('mouseleave', 'testing', function () {
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'testing', function () {
   map.getCanvas().style.cursor = '';
-  });
+});
 
 
 
@@ -475,9 +478,10 @@ function distance(bathroom) {
 	}
 }
 
+// functino to make popup from the side panel cards
 function markerPopUpFromCard() {
   var data = this.data;
-
+  
   var coordinates = data.geometry.coordinates;
 
   // create html for popup
@@ -514,7 +518,11 @@ function markerPopUpFromCard() {
   }
   test += test5;
 
-  new mapboxgl.Popup()
+  // remove existing popups
+  popup.remove()
+
+  //new mapboxgl.Popup()
+  popup
   .setLngLat(coordinates)
   .setHTML(test)
   .addTo(map);
