@@ -55,6 +55,10 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
     // code for inserting cards into the side panel
     let cards = document.getElementById('cardStack');
     for (i = 0; i < allBathrooms.features.length; i++) {
+
+      let spacing = document.createElement('div');
+      let spacingClass = 'col-md-6 col-lg-4 mt-3 list-group-item'
+
       let currProp = allBathrooms.features[i].properties
       let bathroomCoord = allBathrooms.features[i].geometry.coordinates
       
@@ -76,26 +80,32 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
         newK.src = 'imgs/key_24.png';
         divIcons.appendChild(newK);
         newCardClass += ' key';
+        spacingClass += ' key';
       }
       if (da) {
         let newDA = document.createElement('img');
         newDA.src = 'imgs/wc_24.png';
         divIcons.appendChild(newDA);
         newCardClass += ' dis';
+        spacingClass += ' dis';
       }
       let newG = document.createElement('img');
       if (gender == "m") {
         newG.src = 'imgs/m_24.png';
         newCardClass += ' male';
+        spacingClass += ' male';
       } else if (gender == "f") {
         newG.src = 'imgs/f_24.png';
         newCardClass += ' female';
+        spacingClass += ' female';
       } else if (gender == "mf") {
         newG.src = 'imgs/mf_24.png';
         newCardClass += ' male female';
+        spacingClass += ' male female';
       } else {
         newG.src = 'imgs/gn_24.png';
-        newCardClass += ' gn'
+        newCardClass += ' gn male female'
+        spacingClass += ' gn male female';
       }
       divIcons.appendChild(newG);
 
@@ -134,8 +144,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       newCard.appendChild(divOut);
 
       // add spacing between the cards
-      let spacing = document.createElement('div');
-      spacing.className = 'col-md-6 col-lg-4 mt-3'
+      
+      spacing.className = spacingClass
 
       newCard.onclick = markerPopUpFromCard;
       // add new card to card list
