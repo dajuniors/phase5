@@ -170,12 +170,17 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 map.on('click', 'testing', function (e) {
   var data = e.features[0]
   var coordinates = data.geometry.coordinates.slice();
-
+  
   // create html for popup
   let test = '<p>' + data.properties.name + '</p>';
-  test += ' <p> Distance: </p>';
-  test += ' <button oncli> Get Directions </button>';
-  
+
+  // if user provides location, display distance and get directions button
+  if (state.currLat != null && state.currLog != null) {
+    let cord = distance(coordinates)
+    test += ' <p> Distance: '+ cord + '</p>';
+    test = test + ' <button onclick="getRoute([' + data.geometry.coordinates + '])"> Get Directions </button>';
+  }
+    
   let test3 = ' <p> DISABILITY ACCESS: NO </p>';
   if (data.properties.disabilityAccess) {
     test3 = ' <p> DISABILITY ACCESS: YES </p>';
@@ -439,33 +444,3 @@ function distance(bathroom) {
 
 // console.log(test)
 // console.log(test[[0]].properties)
-
-
-/*
-function addMarker(record) {
-    let elem = document.createElement("div");
-    elem.className = "data-marker"
-    elem.textContent = record.user_rating.aggregate_rating;
-    elem.style.backgroundColor = "#" + record.user_rating.rating_color;
-    let marker = new mapboxgl.Marker(elem);
-    let lnglat = [record.location.longitude, record.location.latitude];
-    marker.setLngLat(lnglat);
-    marker.addTo(map);
-
-    let popup = new mapboxgl.Popup();
-    let avgCost = " Average price for two: $" + record.average_cost_for_two;
-    let cuisine = " Cuisines: " + record.cuisines;
-    let innerHTML = "";
-    innerHTML += '<h6>' + record.name + "</h6>";
-    if(record.featured_image) {
-        innerHTML += '<img class="popup-img" src="' + record.featured_image + '" alt="restraunt featured img" />';
-    }
-    innerHTML += '<p>' + cuisine + '</p>';
-    innerHTML += '<p>' + avgCost + '</p>';
-    if(record.menu_url) {
-        innerHTML += '<a href=' + record.menu_url + '" target="_blank">Menu</a>';
-    }
-    popup.setHTML(innerHTML);
-    marker.setPopup(popup);
-}
-*/
