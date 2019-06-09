@@ -52,28 +52,40 @@ function onCurrentPos(position) {
     //zoom out a teeny bit
 }
 
+// functino to sort bathrooms
+function sortByKey(array, key) {
+  return array.sort(function(a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  });
+}
+
 
 map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
     if (error) throw error;
 
     // code for inserting cards into the side panel
-    let cards = document.getElementById('cardStack');
+    let diatanceBathrooms = [];
     for (i = 0; i < allBathrooms.features.length; i++) {
+      let currBathroom = allBathrooms.features[i];
+      let coordinates = currBathroom.geometry.coordinates.slice();
+      diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
+    }
+    let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
 
-      let spacing = document.createElement('div');
-      let spacingClass = 'col-md-6 col-lg-4 mt-3 list-group-item'
-
-      let currProp = allBathrooms.features[i].properties
-      let bathroomCoord = allBathrooms.features[i].geometry.coordinates
+    let cards = document.getElementById('cardStack');
+    for (i = 0; i < sortedBathrooms.length; i++) {
+      let currProp = sortedBathrooms[i].data.properties
+      let bathroomCoord = sortedBathrooms[i].data.geometry.coordinates
 
       let newP = document.createElement('p');
       newP.className = 'mb-1';
-      newP.textContent = 'LOCATION'
+      newP.textContent = currProp.address;
 
       let divIcons = document.createElement('div');
 
       let newCard = document.createElement("button");
-      let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn"
+      let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn mt-3"
 
       let gender = currProp.gender;
       let key = currProp.needKey;
@@ -84,32 +96,26 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
         newK.src = 'imgs/key_24.png';
         divIcons.appendChild(newK);
         newCardClass += ' key';
-        spacingClass += ' key';
       }
       if (da) {
         let newDA = document.createElement('img');
         newDA.src = 'imgs/wc_24.png';
         divIcons.appendChild(newDA);
         newCardClass += ' dis';
-        spacingClass += ' dis';
       }
       let newG = document.createElement('img');
       if (gender == "m") {
         newG.src = 'imgs/m_24.png';
         newCardClass += ' male';
-        spacingClass += ' male';
       } else if (gender == "f") {
         newG.src = 'imgs/f_24.png';
         newCardClass += ' female';
-        spacingClass += ' female';
       } else if (gender == "mf") {
         newG.src = 'imgs/mf_24.png';
         newCardClass += ' male female';
-        spacingClass += ' male female';
       } else {
         newG.src = 'imgs/gn_24.png';
         newCardClass += ' gn male female'
-        spacingClass += ' gn male female';
       }
       divIcons.appendChild(newG);
 
@@ -127,7 +133,8 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
 
       // if user provides location, calculate and display distance on card
       if (state.currLat != null && state.currLog != null) {
-        let distancebtwn = distance(bathroomCoord);
+        //let distancebtwn = distance(bathroomCoord);
+        let distancebtwn = sortedBathrooms[i].id
         newSm.textContent = distancebtwn;
       } else {
         newSm.textContent = "";
@@ -144,21 +151,13 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       divOut.appendChild(div2);
 
       newCard.className = newCardClass
-      newCard.data = allBathrooms.features[i]
+      newCard.data = sortedBathrooms[i].data;
       newCard.appendChild(divOut);
 
-      // add spacing between the cards
-      
-      spacing.className = spacingClass
-
       newCard.onclick = markerPopUpFromCard;
+
       // add new card to card list
-      //cards.appendChild(spacing)
       cards.appendChild(newCard)
-      cards.appendChild(spacing)
-
-
-      //cards.appendChild(spacing)
     }
 
     map.addImage('marker', image);
@@ -565,6 +564,13 @@ function markerPopUpFromCard() {
   .setLngLat(coordinates)
   .setHTML(test)
   .addTo(map);
+
+  map.flyTo({
+    center: [
+    coordinates[0], 
+    coordinates[1]]
+  });
+
 
 }
 

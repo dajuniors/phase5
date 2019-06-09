@@ -129,6 +129,7 @@ hr {
 
 .card_btn {
     width: 100%;
+    bottom-margin: 10px;
 }
 
 .small_icon {
