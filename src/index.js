@@ -31,7 +31,7 @@ map.addControl(new mapboxgl.NavigationControl());
 
 map.on('load', function () {
 
-navigator.geolocation.getCurrentPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
+navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
 
 function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
@@ -344,19 +344,16 @@ function getRoute(end) {
 
 function renderInstructions(data) {
     var routes = data.routes[0]
-    var el = document.getElementById('cards');
-    el.innerHTML = "";
-    el.style.backgroundColor = "white"
-
+    var el = document.getElementById('direction')
+    document.getElementById("direction").style.width = "30%";
     var steps = routes.legs[0].steps;
-
     var tripInstructions = [];
-    var filters = document.getElementById('filter')
-    filters.innerHTML = "";
-
+ 
     for (var i = 0; i < steps.length; i++) {
         tripInstructions.push('<br><li class="list-group-item list-group-flush flex-column align-items-start card_btn">' + steps[i].maneuver.instruction) + '</li>';
-        el.innerHTML = '<br><span class="duration">Trip duration: ' + Math.floor(routes.duration / 60) + ' min </span>' + tripInstructions;
+        let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
+        let button = '<button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button>'
+        el.innerHTML = header + '<h3 class="duration container" style="background-color: LightGreen; padding: 1rem;">' + button + '  Trip duration: ' + Math.floor(routes.duration / 60) + ' mins </h3>' + tripInstructions;
     }
 
     var geojson = {
@@ -401,6 +398,7 @@ function renderInstructions(data) {
 function endDirections() {
   map.removeLayer('route');
   map.removeSource('route');
+  document.getElementById("direction").style.width = "0";
 }
 
 
@@ -480,8 +478,6 @@ function markerPopUpFromCard() {
   .addTo(map);
   
 }
-
-
 
 // let test = allBathrooms.features
 
