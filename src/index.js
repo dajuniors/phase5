@@ -17,7 +17,7 @@ function handleResponse(response) {
     } else {
         return response.json()
             .then(function(err) {
-                throw new Error(err.errorMessage);
+              throw new Error(err.errorMessage);
             });
     }
 }
@@ -381,7 +381,7 @@ function getRoute(end) {
       document.getElementById("direction").style.width = "30%";
       let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
       let button = '<h3 class="container" style="padding:1rem;"></div><button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button><h3>'
-      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div>'
+      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
       el.innerHTML = header + button + form;
     } else {
       if (state.currLat != null && state.currLog != null) {
@@ -401,9 +401,19 @@ function startCoords(end) {
   let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
   fetch(url)
         .then(handleResponse)
+
         .then(data => {
-          let start = data.features[0].geometry.coordinates;
-          address2bathroom(start, end);
+          if (data.features[0] == undefined) {
+            let div = document.getElementById('errormessage');
+            console.log(div);
+            div.setAttribute('class', 'alert alert-danger container')
+            div.innerHTML = '<h3 class="container">Error: Cannot locate the address you have entered. Please enter the full address of your starting location.</h3>'
+            // div.innerHTML = '<div class="alert alert-danger><h3>Cannot find location of inputted address. Please correct the address</h3></div>';
+          } else {
+            let start = data.features[0].geometry.coordinates;
+          
+            address2bathroom(start, end);
+          }
         });
 }
 
