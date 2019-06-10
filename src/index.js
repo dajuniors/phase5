@@ -26,7 +26,7 @@ function handleResponse(response) {
 let map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/streets-v9",
-    center: [-122.308035, 47.653854],
+    center: [-122.308790, 47.655273],
     zoom: 15
 });
 map.addControl(new mapboxgl.NavigationControl());
