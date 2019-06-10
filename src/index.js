@@ -111,7 +111,10 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
         newG.src = 'imgs/f_24.png';
         newCardClass += ' female';
       } else if (gender == "mf") {
-        newG.src = 'imgs/mf_24.png';
+        newG1 = document.createElement('img');
+        newG1.src = 'imgs/m_24.png';
+        divIcons.appendChild(newG1);
+        newG.src = 'imgs/f_24.png';
         newCardClass += ' male female';
       } else {
         newG.src = 'imgs/gn_24.png';
