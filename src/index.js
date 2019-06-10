@@ -72,7 +72,7 @@ function onCurrentPos(position) {
               // edit stops
               'stops': [[12, 2], [22, 180]]
               },
-              'circle-color': "#1692FF"
+              'circle-color': "#352be5"
           }
       })
     }
