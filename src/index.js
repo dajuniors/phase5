@@ -423,8 +423,12 @@ function setVisibility() {
           filteredBathrooms.features = addArr;
       } 
   }
-  console.log(filteredBathrooms);
+  
+  if(filteredBathrooms.features.length > 0) {
   state.dataSource = filteredBathrooms;
+  } else {
+      state.dataSource = allBathrooms;
+  }
 
   var restrooms = document.querySelectorAll(".list-group-item");
   if (!male && !female && !gender && !disability && !key) {
