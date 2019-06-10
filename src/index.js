@@ -429,7 +429,7 @@ function setVisibility() {
           filteredBathrooms.features = addArr;
       } 
   }
-  
+
   if(filteredBathrooms.features.length > 0) {
   state.dataSource = filteredBathrooms;
   } else {
@@ -519,9 +519,8 @@ function startCoords(end) {
         .then(data => {
           if (data.features[0] == undefined) {
             let div = document.getElementById('errormessage');
-            console.log(div);
             div.setAttribute('class', 'alert alert-danger container')
-            div.innerHTML = '<h3 class="container">Error: Cannot locate the address you have entered. Please enter the full address of your starting location.</h3>'
+            div.innerHTML = '<h3 id = "error" class="container">Error: Cannot locate the address you have entered. Please enter the full address of your starting location.</h3>'
             // div.innerHTML = '<div class="alert alert-danger><h3>Cannot find location of inputted address. Please correct the address</h3></div>';
           } else {
             let start = data.features[0].geometry.coordinates;
@@ -551,7 +550,7 @@ function renderInstructions(data) {
         tripInstructions.push('<br><li class="list-group-item list-group-flush flex-column align-items-start card_btn">' + steps[i].maneuver.instruction) + '</li>';
         let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
         let button = '<button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button>'
-        el.innerHTML = header + '<h3 class="duration container" style="background-color: LightGreen; padding: 1rem;">' + button + '  Trip duration: ' + Math.floor(routes.duration / 60) + ' mins </h3>' + tripInstructions;
+        el.innerHTML = header + '<h3 class="duration container" style="background-color: #b7a57a; padding: 1rem;">' + button + '  Trip duration: ' + Math.floor(routes.duration / 60) + ' mins </h3>' + tripInstructions;
     }
 
     var geojson = {
