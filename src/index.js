@@ -6,6 +6,7 @@ let state = {
     currLog: undefined,
     dataSource: allBathrooms
 }
+
 /**
  * Handles responses from the fetch() API.
  * @param {Response} response
@@ -17,7 +18,7 @@ function handleResponse(response) {
     } else {
         return response.json()
             .then(function(err) {
-                throw new Error(err.errorMessage);
+              throw new Error(err.errorMessage);
             });
     }
 }
@@ -36,21 +37,20 @@ navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHigh
 
 function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
+    // the first time the user allows their location, create a marker and add to the map
+    // else: update the marker coordinates to be the updated position
     if (state.currLat == null && state.currLog == null) {
       let div = document.createElement("div");
       div.className = "current-location-marker";
       let marker = new mapboxgl.Marker(div);
       marker.setLngLat(lnglat).addTo(map);
+      map.flyTo({center: lnglat, zoom: 18});
+    } else {
+      marker.setLngLat(lnglat);
     }
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
-    map.flyTo({center: lnglat, zoom: 18});
     //zoom out a teeny bit
-    marker.setLngLat(lnglat);
-
-    
-
-
 }
 
 // functino to sort bathrooms
@@ -67,29 +67,22 @@ function sortByKey(array, key) {
       let currBathroom = allBathrooms.features[i];
       let coordinates = currBathroom.geometry.coordinates.slice();
       diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
-
-      //console.log(distance(coordinates))
     }
     let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
-    //console.log(sortedBathrooms)
 
     let cards = document.getElementById('cardStack');
     for (i = 0; i < sortedBathrooms.length; i++) {
-
-      let spacing = document.createElement('div');
-      let spacingClass = 'col-md-6 col-lg-4 mt-3 list-group-item'
-
       let currProp = sortedBathrooms[i].data.properties
       let bathroomCoord = sortedBathrooms[i].data.geometry.coordinates
 
       let newP = document.createElement('p');
       newP.className = 'mb-1';
-      newP.textContent = 'LOCATION'
+      newP.textContent = currProp.address;
 
       let divIcons = document.createElement('div');
 
       let newCard = document.createElement("button");
-      let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn"
+      let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn mt-3"
 
       let gender = currProp.gender;
       let key = currProp.needKey;
@@ -100,32 +93,29 @@ function sortByKey(array, key) {
         newK.src = 'imgs/key_24.png';
         divIcons.appendChild(newK);
         newCardClass += ' key';
-        spacingClass += ' key';
       }
       if (da) {
         let newDA = document.createElement('img');
         newDA.src = 'imgs/wc_24.png';
         divIcons.appendChild(newDA);
         newCardClass += ' dis';
-        spacingClass += ' dis';
       }
       let newG = document.createElement('img');
       if (gender == "m") {
         newG.src = 'imgs/m_24.png';
         newCardClass += ' male';
-        spacingClass += ' male';
       } else if (gender == "f") {
         newG.src = 'imgs/f_24.png';
         newCardClass += ' female';
-        spacingClass += ' female';
       } else if (gender == "mf") {
-        newG.src = 'imgs/mf_24.png';
+        newG1 = document.createElement('img');
+        newG1.src = 'imgs/m_24.png';
+        divIcons.appendChild(newG1);
+        newG.src = 'imgs/f_24.png';
         newCardClass += ' male female';
-        spacingClass += ' male female';
       } else {
         newG.src = 'imgs/gn_24.png';
         newCardClass += ' gn male female'
-        spacingClass += ' gn male female';
       }
       divIcons.appendChild(newG);
 
@@ -164,15 +154,10 @@ function sortByKey(array, key) {
       newCard.data = sortedBathrooms[i].data;
       newCard.appendChild(divOut);
 
-      // add spacing between the cards
-      
-      spacing.className = spacingClass
-
       newCard.onclick = markerPopUpFromCard;
 
       // add new card to card list
       cards.appendChild(newCard)
-      cards.appendChild(spacing)
     }
 
     map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
@@ -433,11 +418,54 @@ function setVisibility() {
 // pass in the coordinates for the end location
 // send requests to mapbox API
 function getRoute(end) {
-    var start = [state.currLog, state.currLat];
-    var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
-    fetch(url)
+    if (state.currLat == null && state.currLog == null) {
+      var el = document.getElementById('direction')
+      document.getElementById("direction").style.width = "30%";
+      let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
+      let button = '<h3 class="container" style="padding:1rem;"></div><button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button><h3>'
+      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
+      el.innerHTML = header + button + form;
+    } else {
+      if (state.currLat != null && state.currLog != null) {
+        var start = [state.currLog, state.currLat];
+      }
+      var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+      fetch(url)
+          .then(handleResponse)
+          .then(renderInstructions)
+    }
+}
+
+function startCoords(end) {  
+  var address = document.getElementById('address');
+  let searchtext = address.value;
+  let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
+  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
+  fetch(url)
         .then(handleResponse)
-        .then(renderInstructions)
+
+        .then(data => {
+          if (data.features[0] == undefined) {
+            let div = document.getElementById('errormessage');
+            console.log(div);
+            div.setAttribute('class', 'alert alert-danger container')
+            div.innerHTML = '<h3 class="container">Error: Cannot locate the address you have entered. Please enter the full address of your starting location.</h3>'
+            // div.innerHTML = '<div class="alert alert-danger><h3>Cannot find location of inputted address. Please correct the address</h3></div>';
+          } else {
+            let start = data.features[0].geometry.coordinates;
+          
+            address2bathroom(start, end);
+          }
+        });
+}
+
+// find route between inputed starting point and bathroom
+// then render instructions
+function address2bathroom(start, end) {
+  var url = 'https://api.mapbox.com/directions/v5/mapbox/walking/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+          fetch(url)
+              .then(handleResponse)
+              .then(renderInstructions);
 }
 
 function renderInstructions(data) {
@@ -494,8 +522,10 @@ function renderInstructions(data) {
 }
 
 function endDirections() {
-  map.removeLayer('route');
-  map.removeSource('route');
+  if (map.getSource('route')) {
+    map.removeLayer('route');
+    map.removeSource('route');
+  }  
   document.getElementById("direction").style.width = "0";
 }
 
@@ -530,10 +560,10 @@ function distance(bathroom) {
     dist = dist * 60 * 1.1515;
 
     // if distance is less than 0.1 miles, convert distance to feet
-    if (dist <= 0.1) {
-      dist = dist * 5280;
-      return dist.toFixed(2) + " feet";
-    }
+    // if (dist <= 0.1) {
+    //   dist = dist * 5280;
+    //   return dist.toFixed(2) + " feet";
+    // }
     return dist.toFixed(2) + " miles";
 	}
 }
@@ -586,6 +616,13 @@ function markerPopUpFromCard() {
   .setLngLat(coordinates)
   .setHTML(test)
   .addTo(map);
+
+  map.flyTo({
+    center: [
+    coordinates[0], 
+    coordinates[1]]
+  });
+
 
 }
 
