@@ -3,7 +3,8 @@ mapboxgl.accessToken = mapkey;
 
 let state = {
     currLat: undefined,
-    currLog: undefined
+    currLog: undefined,
+    dataSource: allBathrooms
 }
 /**
  * Handles responses from the fetch() API.
@@ -59,10 +60,6 @@ function sortByKey(array, key) {
       return ((x < y) ? -1 : ((x > y) ? 1 : 0));
   });
 }
-
-
-map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
-    if (error) throw error;
 
     // code for inserting cards into the side panel
     let diatanceBathrooms = [];
@@ -178,12 +175,15 @@ map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(erro
       cards.appendChild(spacing)
     }
 
+    map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
+    if (error) throw error;
+
     map.addImage('marker', image);
 
 
     map.addSource("bathrooms", {
         "type": "geojson",
-        "data": allBathrooms
+        "data": state.dataSource
     });
 
     map.addLayer({
@@ -290,7 +290,9 @@ Array.prototype.forEach.call(allCheckboxes, function(el) {
 function toggleCheckbox(e) {
   getChecked(e.target.name);
   setVisibility();
+  
 }
+
 
 function getChecked(name) {
   checked[name] = Array.from(
@@ -320,25 +322,62 @@ function setVisibility() {
       // el.style.display = "none";
     // }
   // });
+
   let male = false;
   let female = false;
   let gender = false;
   let disability = false;
   let key = false;
   let checked = document.querySelectorAll("input:checked")
+  let addArr = allBathrooms.features;
+  let filteredBathrooms = {
+    "type": "FeatureCollection",
+    "features": []
+}
   for (let i = 0; i < checked.length; i++) {
-	  let val = checked[i].value;
-	  if (val == "male")
-		  male = true
-	  if (val == "female")
-		  female = true
-	  if (val == "gn")
-		  gender = true
-	  if (val == "dis")
-		  disability = true
-	  if (val == "key")
-		  key = true
+      let val = checked[i].value;
+	  if (val == "male") {
+          male = true
+          state.male = true
+          addArr = addArr.filter(item => 
+            item.properties.gender == "m" || 
+            item.properties.gender == "mf" ||
+            item.properties.gender == "gn")
+          filteredBathrooms.features = addArr;
+      }
+	  if (val == "female") {
+          female = true
+          state.female = true
+          addArr = addArr.filter(item => 
+            item.properties.gender == "f" || 
+            item.properties.gender == "mf" ||
+            item.properties.gender == "gn")
+          filteredBathrooms.features = addArr;
+      }
+	  if (val == "gn"){
+          gender = true
+          state.gender = true
+          addArr = addArr.filter(item => 
+            item.properties.gender == "gn")
+          filteredBathrooms.features = addArr;
+      }
+	  if (val == "dis") {
+          disability = true
+          state.disability = true
+          addArr = addArr.filter(item => 
+            item.properties.disabilityAccess == disability);
+          filteredBathrooms.features = addArr;
+      }
+	  if (val == "key") {
+          key = true
+          state.key = true
+          addArr = addArr.filter(item => 
+            item.properties.needKey == key)
+          filteredBathrooms.features = addArr;
+      }
   }
+  state.dataSource = filteredBathrooms;
+
   var restrooms = document.querySelectorAll(".list-group-item");
   if (!male && !female && !gender && !disability && !key) {
 	  for (let i = 0; i < restrooms.length; i++)

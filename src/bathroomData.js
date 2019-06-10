@@ -28,23 +28,9 @@ db.collection("Bathrooms").get().then(function(querySnapshot) {
     });
 });
 
-    // let test = {
-    //     "type": "FeatureCollection", "features": [
-    //         {"type": "Feature", 
-    //         "properties": {"name": "Mary Gates", "disability":false}, 
-    //         "geometry":{"type":"Point","coordinates":[-122.3080377, 47.654979]}},
-
-    //         {"type": "Feature", 
-    //         "properties": {"name": "CSE", "disability":false}, 
-    //         "geometry":{"type":"Point","coordinates":[-122.3080377, 47.654979]}}
-
-    //     ]
-    // }
-
-    // console.log(test);
 
 
 
-    // /*
-                
-    // */
+// let newObj = filter(allBathrooms.features.properties == )
+
+//let myKeys = myObj.keys(data).filter(key => key == vm.system_id);
