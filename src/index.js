@@ -39,20 +39,61 @@ function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
     // the first time the user allows their location, create a marker and add to the map
     // else: update the marker coordinates to be the updated position
-    let div = document.createElement("div");
-    div.className = "current-location-marker";
-    let marker = new mapboxgl.Marker(div);
-    if (marker.getLngLat() == marker.setLngLat) {
-      state.currLat = position.coords.latitude;
-      state.currLog = position.coords.longitude;
-    } else {
-      marker.remove();
-      let newMarker = new mapboxgl.Marker(div);
-      newMarker.setLngLat(lnglat).addTo(map);
-      map.flyTo({center: lnglat, zoom: 18});
-      state.currLat = position.coords.latitude;
-      state.currLog = position.coords.longitude;
+    // let div = document.createElement("div");
+    // div.className = "current-location-marker";
+    // let marker = new mapboxgl.Marker();
+    // marker.setLngLat(lnglat).addTo(map);
+    // map.flyTo({center: lnglat, zoom: 18});
+    state.currLat = position.coords.latitude;
+    state.currLog = position.coords.longitude;
+    // if (marker.getLngLat() == marker.setLngLat) {
+    //   state.currLat = position.coords.latitude;
+    //   state.currLog = position.coords.longitude;
+    // } else {
+    //   marker.remove();
+    //   let newMarker = new mapboxgl.Marker(div);
+    //   newMarker.setLngLat(lnglat).addTo(map);
+    //   map.flyTo({center: lnglat, zoom: 18});
+    //   state.currLat = position.coords.latitude;
+    //   state.currLog = position.coords.longitude;
+    var geojson = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates: lnglat
+      }
     }
+    if (map.getSource('userLocation')) {
+      map.getSource('userLocation').setData(geojson);
+    } else {
+        map.addLayer({
+          "id": "userLocation",
+          "type": "circle",
+          "source": {
+            "type": "geojson",
+            "data": {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "LineString",
+                "coordinates": lnglat
+              }
+            }
+          },
+          "paint": {
+            'circle-radius': {
+              'base': 2,
+              // edit stops
+              'stops': [[12, 2], [22, 180]]
+              },
+              'circle-color': "#1692FF"
+          }
+      })
+    }
+    
+    map.flyTo({center: lnglat, zoom: 18});
+    
 }
 
 // functino to sort bathrooms
@@ -465,7 +506,6 @@ function startCoords(end) {
   let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
   fetch(url)
         .then(handleResponse)
-
         .then(data => {
           if (data.features[0] == undefined) {
             let div = document.getElementById('errormessage');
