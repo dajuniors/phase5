@@ -33,29 +33,12 @@ map.addControl(new mapboxgl.NavigationControl());
 
 map.on('load', function () {
 
-navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: true});
+navigator.geolocation.watchPosition(onCurrentPos, onErrorCurrentPos, {enableHighAccuracy: false});
 
 function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
-    // the first time the user allows their location, create a marker and add to the map
-    // else: update the marker coordinates to be the updated position
-    // let div = document.createElement("div");
-    // div.className = "current-location-marker";
-    // let marker = new mapboxgl.Marker();
-    // marker.setLngLat(lnglat).addTo(map);
-    // map.flyTo({center: lnglat, zoom: 18});
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
-    // if (marker.getLngLat() == marker.setLngLat) {
-    //   state.currLat = position.coords.latitude;
-    //   state.currLog = position.coords.longitude;
-    // } else {
-    //   marker.remove();
-    //   let newMarker = new mapboxgl.Marker(div);
-    //   newMarker.setLngLat(lnglat).addTo(map);
-    //   map.flyTo({center: lnglat, zoom: 18});
-    //   state.currLat = position.coords.latitude;
-    //   state.currLog = position.coords.longitude;
     var geojson = {
       type: 'Feature',
       properties: {},
@@ -214,7 +197,6 @@ function renderCards() {
     diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
   }
   let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
-  console.log(sortedBathrooms);
 
   let cards = document.getElementById('cardStack');
   cards.innerHTML = "";
@@ -282,7 +264,6 @@ function renderCards() {
     if (sortedBathrooms[i].id != "NaN miles") {
       // let distancebtwn = distance(bathroomCoord);
       let distancebtwn = sortedBathrooms[i].id;
-      console.log(distancebtwn);
       newSm.textContent = distancebtwn;
     } else {
       newSm.textContent = "";
@@ -492,8 +473,8 @@ function setVisibility() {
 // send requests to mapbox API
 function getRoute(end) {
     if (state.currLat == null && state.currLog == null) {
-      var el = document.getElementById('direction')
-      document.getElementById("direction").style.width = "30%";
+      var el = document.getElementById('direction');
+      el.style.width = "30%";
       let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
       let button = '<h3 class="container" style="padding:1rem;"></div><button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button><h3>'
       let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
@@ -521,7 +502,6 @@ function startCoords(end) {
             let div = document.getElementById('errormessage');
             div.setAttribute('class', 'alert alert-danger container')
             div.innerHTML = '<h3 id = "error" class="container">Error: Cannot locate the address you have entered. Please enter the full address of your starting location.</h3>'
-            // div.innerHTML = '<div class="alert alert-danger><h3>Cannot find location of inputted address. Please correct the address</h3></div>';
           } else {
             let start = data.features[0].geometry.coordinates;
           
@@ -540,9 +520,9 @@ function address2bathroom(start, end) {
 }
 
 function renderInstructions(data) {
-    var routes = data.routes[0]
-    var el = document.getElementById('direction')
-    document.getElementById("direction").style.width = "30%";
+    var routes = data.routes[0];
+    var el = document.getElementById('direction');
+    el.style.width = "30%";
     var steps = routes.legs[0].steps;
     var tripInstructions = [];
 
@@ -629,12 +609,6 @@ function distance(bathroom) {
 		dist = Math.acos(dist);
 		dist = dist * 180/Math.PI;
     dist = dist * 60 * 1.1515;
-
-    // if distance is less than 0.1 miles, convert distance to feet
-    // if (dist <= 0.1) {
-    //   dist = dist * 5280;
-    //   return dist.toFixed(2) + " feet";
-    // }
     return dist.toFixed(2) + " miles";
 	}
 }
