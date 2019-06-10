@@ -168,7 +168,7 @@ function sortByKey(array, key) {
 
     map.addSource("bathrooms", {
         "type": "geojson",
-        "data": state.dataSource
+        "data": allBathrooms
     });
 
     map.addLayer({
@@ -275,9 +275,28 @@ Array.prototype.forEach.call(allCheckboxes, function(el) {
 function toggleCheckbox(e) {
   getChecked(e.target.name);
   setVisibility();
-  
+  filterMarkers();
 }
 
+function filterMarkers() {
+    map.removeLayer("testing");
+    map.removeSource("bathrooms");
+    map.addSource("bathrooms", {
+        "type": "geojson",
+        "data": state.dataSource
+    });
+
+    map.addLayer({
+        "id": "testing",
+        "type": "symbol",
+        "source": "bathrooms",
+        "layout": {
+            "icon-image": "marker",
+            "icon-size": 1,
+            "icon-allow-overlap": true
+        }
+    });
+}
 
 function getChecked(name) {
   checked[name] = Array.from(
@@ -359,8 +378,9 @@ function setVisibility() {
           addArr = addArr.filter(item => 
             item.properties.needKey == key)
           filteredBathrooms.features = addArr;
-      }
+      } 
   }
+  console.log(filteredBathrooms);
   state.dataSource = filteredBathrooms;
 
   var restrooms = document.querySelectorAll(".list-group-item");
