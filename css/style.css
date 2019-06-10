@@ -3,6 +3,18 @@
     height: 100vh;
 }
 
+#error {
+    background-color: #b7a57a;
+    color: white;
+    text-align: center;
+}
+
+#errormessage {
+    background-color: #b7a57a;
+    border: 2rem;
+    margin: .2em;
+}
+
 .full-page {
     height:100vh;
     width:100%;
@@ -110,7 +122,7 @@ hr {
     top: 0; /* Stay at the top */
     right: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
-    background-color: #EBBEBE;
+    background-color: #4b2e83;
 }
 
 #direction {
@@ -121,7 +133,7 @@ hr {
     top: 0; /* Stay at the top */
     right: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
-    background-color: #EBBEBE;
+    background-color: #4b2e83;
 }
 
 .sidenav a {
@@ -135,7 +147,7 @@ hr {
 .sidenav .filter {
     padding: 6px 8px 6px 16px;
     font-size: auto;
-    background-color: LightGreen;
+    background-color: #b7a57a;
 }
 
 .filter ul {
@@ -163,6 +175,7 @@ hr {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 2.8vw;
     text-align: justify;
+    color: white;
 }
 
 
