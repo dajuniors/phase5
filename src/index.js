@@ -518,7 +518,6 @@ function startCoords(end) {
             // div.innerHTML = '<div class="alert alert-danger><h3>Cannot find location of inputted address. Please correct the address</h3></div>';
           } else {
             let start = data.features[0].geometry.coordinates;
-          
             address2bathroom(start, end);
           }
         });
