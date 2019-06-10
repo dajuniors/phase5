@@ -66,7 +66,9 @@ function onCurrentPos(position) {
     }
     if (map.getSource('userLocation')) {
       map.getSource('userLocation').setData(geojson);
+      renderCards(); 
     } else {
+        renderCards(); 
         map.addLayer({
           "id": "userLocation",
           "type": "circle",
@@ -91,118 +93,11 @@ function onCurrentPos(position) {
           }
       })
     }
-    
     map.flyTo({center: lnglat, zoom: 18});
-    
 }
 
-// functino to sort bathrooms
-function sortByKey(array, key) {
-  return array.sort(function(a, b) {
-      var x = a[key]; var y = b[key];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-  });
-}
 
-    // code for inserting cards into the side panel
-    let diatanceBathrooms = [];
-    for (i = 0; i < allBathrooms.features.length; i++) {
-      let currBathroom = allBathrooms.features[i];
-      let coordinates = currBathroom.geometry.coordinates.slice();
-      diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
-    }
-    let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
-
-    let cards = document.getElementById('cardStack');
-    for (i = 0; i < sortedBathrooms.length; i++) {
-      let currProp = sortedBathrooms[i].data.properties
-      let bathroomCoord = sortedBathrooms[i].data.geometry.coordinates
-
-      let newP = document.createElement('p');
-      newP.className = 'mb-1';
-      newP.textContent = currProp.address;
-
-      let divIcons = document.createElement('div');
-
-      let newCard = document.createElement("button");
-      let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn mt-3"
-
-      let gender = currProp.gender;
-      let key = currProp.needKey;
-      let da = currProp.disabilityAccess;
-
-      if (key) {
-        let newK = document.createElement('img');
-        newK.src = 'imgs/key_24.png';
-        divIcons.appendChild(newK);
-        newCardClass += ' key';
-      }
-      if (da) {
-        let newDA = document.createElement('img');
-        newDA.src = 'imgs/wc_24.png';
-        divIcons.appendChild(newDA);
-        newCardClass += ' dis';
-      }
-      let newG = document.createElement('img');
-      if (gender == "m") {
-        newG.src = 'imgs/m_24.png';
-        newCardClass += ' male';
-      } else if (gender == "f") {
-        newG.src = 'imgs/f_24.png';
-        newCardClass += ' female';
-      } else if (gender == "mf") {
-        newG1 = document.createElement('img');
-        newG1.src = 'imgs/m_24.png';
-        divIcons.appendChild(newG1);
-        newG.src = 'imgs/f_24.png';
-        newCardClass += ' male female';
-      } else {
-        newG.src = 'imgs/gn_24.png';
-        newCardClass += ' gn male female'
-      }
-      divIcons.appendChild(newG);
-
-
-      let div2 = document.createElement('div');
-      div2.className = 'd-flex w-100 justify-content-between';
-      div2.appendChild(newP);
-      div2.appendChild(divIcons);
-
-
-      let newH = document.createElement('h1');
-      newH.className = 'mb-1';
-      newH.textContent = currProp.name;
-      let newSm = document.createElement('small');
-
-      // if user provides location, calculate and display distance on card
-      if (state.currLat != null && state.currLog != null) {
-        //let distancebtwn = distance(bathroomCoord);
-        let distancebtwn = sortedBathrooms[i].id
-        newSm.textContent = distancebtwn;
-      } else {
-        newSm.textContent = "";
-      }
-
-      let div1 = document.createElement('div');
-      div1.className = 'd-flex w-100 justify-content-between';
-
-      div1.appendChild(newH);
-      div1.appendChild(newSm);
-
-      let divOut = document.createElement("div");
-      divOut.appendChild(div1);
-      divOut.appendChild(div2);
-
-      newCard.className = newCardClass
-      newCard.data = sortedBathrooms[i].data;
-      newCard.appendChild(divOut);
-
-      newCard.onclick = markerPopUpFromCard;
-
-      // add new card to card list
-      cards.appendChild(newCard)
-    }
-
+    renderCards();
     map.loadImage("https://img.icons8.com/color/24/000000/marker.png", function(error, image) {
     if (error) throw error;
 
@@ -302,6 +197,117 @@ function onErrorCurrentPos(error) {
     console.error(error);
 }
 
+// functino to sort bathroomsa
+function sortByKey(array, key) {
+  return array.sort(function(a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  });
+}
+
+function renderCards() {
+  // code for inserting cards into the side panel
+  let diatanceBathrooms = [];
+  for (i = 0; i < allBathrooms.features.length; i++) {
+    let currBathroom = allBathrooms.features[i];
+    let coordinates = currBathroom.geometry.coordinates.slice();
+    diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
+  }
+  let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
+  console.log(sortedBathrooms);
+
+  let cards = document.getElementById('cardStack');
+  cards.innerHTML = "";
+  for (i = 0; i < sortedBathrooms.length; i++) {
+    let currProp = sortedBathrooms[i].data.properties
+    let bathroomCoord = sortedBathrooms[i].data.geometry.coordinates
+
+    let newP = document.createElement('p');
+    newP.className = 'mb-1';
+    newP.textContent = currProp.address;
+
+    let divIcons = document.createElement('div');
+
+    let newCard = document.createElement("button");
+    let newCardClass = "list-group-item list-group-flush flex-column align-items-start card_btn mt-3"
+
+    let gender = currProp.gender;
+    let key = currProp.needKey;
+    let da = currProp.disabilityAccess;
+
+    if (key) {
+      let newK = document.createElement('img');
+      newK.src = 'imgs/key_24.png';
+      divIcons.appendChild(newK);
+      newCardClass += ' key';
+    }
+    if (da) {
+      let newDA = document.createElement('img');
+      newDA.src = 'imgs/wc_24.png';
+      divIcons.appendChild(newDA);
+      newCardClass += ' dis';
+    }
+    let newG = document.createElement('img');
+    if (gender == "m") {
+      newG.src = 'imgs/m_24.png';
+      newCardClass += ' male';
+    } else if (gender == "f") {
+      newG.src = 'imgs/f_24.png';
+      newCardClass += ' female';
+    } else if (gender == "mf") {
+      newG1 = document.createElement('img');
+      newG1.src = 'imgs/m_24.png';
+      divIcons.appendChild(newG1);
+      newG.src = 'imgs/f_24.png';
+      newCardClass += ' male female';
+    } else {
+      newG.src = 'imgs/gn_24.png';
+      newCardClass += ' gn male female'
+    }
+    divIcons.appendChild(newG);
+
+
+    let div2 = document.createElement('div');
+    div2.className = 'd-flex w-100 justify-content-between';
+    div2.appendChild(newP);
+    div2.appendChild(divIcons);
+
+
+    let newH = document.createElement('h1');
+    newH.className = 'mb-1';
+    newH.textContent = currProp.name;
+    let newSm = document.createElement('small');
+
+    // if user provides location, calculate and display distance on card
+    if (sortedBathrooms[i].id != "NaN miles") {
+      // let distancebtwn = distance(bathroomCoord);
+      let distancebtwn = sortedBathrooms[i].id;
+      console.log(distancebtwn);
+      newSm.textContent = distancebtwn;
+    } else {
+      newSm.textContent = "";
+    }
+
+    let div1 = document.createElement('div');
+    div1.className = 'd-flex w-100 justify-content-between';
+
+    div1.appendChild(newH);
+    div1.appendChild(newSm);
+
+    let divOut = document.createElement("div");
+    divOut.appendChild(div1);
+    divOut.appendChild(div2);
+
+    newCard.className = newCardClass
+    newCard.data = sortedBathrooms[i].data;
+    newCard.appendChild(divOut);
+
+    newCard.onclick = markerPopUpFromCard;
+
+    // add new card to card list
+    cards.appendChild(newCard)
+  }
+}
 
 var allCheckboxes = document.querySelectorAll("input[type=checkbox]");
 var allRestrooms = Array.from(document.querySelectorAll(".list-group-item"));
