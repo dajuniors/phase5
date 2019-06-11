@@ -51,7 +51,7 @@ function onCurrentPos(position) {
       map.getSource('userLocation').setData(geojson);
       renderCards(); 
     } else {
-        renderCards(); 
+        renderCards();
         map.addLayer({
           "id": "userLocation",
           "type": "circle",
@@ -74,9 +74,9 @@ function onCurrentPos(position) {
               },
               'circle-color': "#1692FF"
           }
-      })
+        })
+      map.flyTo({center: lnglat, zoom: 18});
     }
-    map.flyTo({center: lnglat, zoom: 18});
 }
 
 
