@@ -493,8 +493,8 @@ function getRoute(end) {
 function startCoords(end) {  
   var address = document.getElementById('address');
   let searchtext = address.value;
-  let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
-  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
+  // let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
+  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken; // + "&limit=1&bbox=" + bbox;
   fetch(url)
         .then(handleResponse)
         .then(data => {
