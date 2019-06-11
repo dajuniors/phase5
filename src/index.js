@@ -131,8 +131,8 @@ map.on('click', 'testing', function (e) {
   }
   test += test3;
 
-  let test4 = ' <p> KEY REQUIRED: NO </p>';
-  if (data.properties.disabilityAccess) {
+  let test4 = ' <p> KEY REQUIRED: YES </p>';
+  if (data.properties.needKey) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
   }
   test += test4;
@@ -638,7 +638,7 @@ function markerPopUpFromCard() {
   test += test3;
 
   let test4 = ' <p> KEY REQUIRED: NO </p>';
-  if (data.properties.disabilityAccess) {
+  if (data.properties.needKey) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
   }
   test += test4;
