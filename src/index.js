@@ -18,6 +18,7 @@ function handleResponse(response) {
     } else {
         return response.json()
             .then(function(err) {
+              window.alert(err.message);
               throw new Error(err.errorMessage);
             });
     }
@@ -39,6 +40,12 @@ function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
+
+    if (state.currLat != null && state.currLog != null) {
+      let legendLoc = document.getElementById('legendLoc');
+      legendLoc.textContent = "Your Location";
+    }
+
     var geojson = {
       type: 'Feature',
       properties: {},
@@ -51,7 +58,7 @@ function onCurrentPos(position) {
       map.getSource('userLocation').setData(geojson);
       renderCards(); 
     } else {
-        renderCards(); 
+        renderCards();
         map.addLayer({
           "id": "userLocation",
           "type": "circle",
@@ -70,13 +77,13 @@ function onCurrentPos(position) {
             'circle-radius': {
               'base': 2,
               // edit stops
-              'stops': [[12, 2], [22, 180]]
+              'stops': [[18, 10], [22, 100]]
               },
               'circle-color': "#1c42ef"
           }
-      })
+        })
+      map.flyTo({center: lnglat, zoom: 18});
     }
-    map.flyTo({center: lnglat, zoom: 18});
 }
 
 
@@ -131,8 +138,8 @@ map.on('click', 'testing', function (e) {
   }
   test += test3;
 
-  let test4 = ' <p> KEY REQUIRED: NO </p>';
-  if (data.properties.disabilityAccess) {
+  let test4 = ' <p> KEY REQUIRED: YES </p>';
+  if (data.properties.needKey) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
   }
   test += test4;
@@ -336,6 +343,15 @@ function getChecked(name) {
   });
 }
 
+function goToLoc() {
+  let locbtn = document.getElementById('yourLoc');
+  map.flyTo({
+    center: [
+      state.currLog, 
+      state.currLat]
+  });
+}
+
 function setVisibility() {
   // allRestrooms.map(function(el) {
     // var gender;
@@ -477,7 +493,7 @@ function getRoute(end) {
       el.style.width = "30%";
       let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
       let button = '<h3 class="container" style="padding:1rem;"></div><button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button><h3>'
-      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
+      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Full Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
       el.innerHTML = header + button + form;
     } else {
       if (state.currLat != null && state.currLog != null) {
@@ -493,8 +509,8 @@ function getRoute(end) {
 function startCoords(end) {  
   var address = document.getElementById('address');
   let searchtext = address.value;
-  let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
-  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
+  // let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
+  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken; // + "&limit=1&bbox=" + bbox;
   fetch(url)
         .then(handleResponse)
         .then(data => {
@@ -637,7 +653,7 @@ function markerPopUpFromCard() {
   test += test3;
 
   let test4 = ' <p> KEY REQUIRED: NO </p>';
-  if (data.properties.disabilityAccess) {
+  if (data.properties.needKey) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
   }
   test += test4;
