@@ -59,7 +59,34 @@ function onCurrentPos(position) {
       renderCards(); 
     } else {
       renderCards();
+      map.addLayer({
+        "id": "userLocation",
+        "type": "circle",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [state.currLog, state.currLat]
+            }
+          }
+        },
+        'layout': {
+          "visibility": 'visible'
+        },
+        "paint": {
+          'circle-radius': {
+            'base': 2,
+            // edit stops
+            'stops': [[18, 10], [22, 100]]
+            },
+            'circle-color': "#1692FF"
+        }
+      });
       map.flyTo({center: lnglat, zoom: 18});
+
     }
 }
 
@@ -183,48 +210,6 @@ function renderCards() {
   }
 
   let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
-  if(state.currLat != null && state.currLog != null) {
-    if (map.getSource('userLocation')) {
-      var geojson = {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'Point',
-          coordinates: [state.currLog, state.currLat]
-        }
-      }
-      map.getSource('userLocation').setData(geojson);
-    } else {
-      map.addLayer({
-        "id": "userLocation",
-        "type": "circle",
-        "source": {
-          "type": "geojson",
-          "data": {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [state.currLog, state.currLat]
-            }
-          }
-        },
-        'layout': {
-          "visibility": 'visible'
-        },
-        "paint": {
-          'circle-radius': {
-            'base': 2,
-            // edit stops
-            'stops': [[18, 10], [22, 100]]
-            },
-            'circle-color': "#1692FF"
-        }
-      });
-    }
-    
-  } 
-
   let cards = document.getElementById('cardStack');
   cards.innerHTML = "";
   for (i = 0; i < sortedBathrooms.length; i++) {
