@@ -70,19 +70,23 @@
             </button> -->
 
         </div>
-    </div>
-    <div id="map">
-      <div class='legend' id='legend'>
-        <div>
-          <span><img class="icon" src="imgs/marker.png" alt="bathroom marker"></span>
-          <span><p>Restroom</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/location.png" alt="user location"></span>
-          <span><p>Your Location</p></span>
+      </div>
+      <div id="map">
+        <div class='legend' id='legend'>
+          <div>
+            <span><img class="icon" src="imgs/marker.png" alt="bathroom marker"></span>
+            <span><p>Restroom</p></span>
+          </div>
+          <div>
+            <span>
+              <button id='yourLoc' onclick="goToLoc()">
+                  <img class="icon" src="imgs/location.png" alt="user location">
+              </button>
+            </span>
+            <span><p>Your Location</p></span>
+          </div>
         </div>
       </div>
-    </div>
 
 
     <div id="instructions"></div>

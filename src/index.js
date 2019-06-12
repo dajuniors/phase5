@@ -337,6 +337,15 @@ function getChecked(name) {
   });
 }
 
+function goToLoc() {
+  let locbtn = document.getElementById('yourLoc');
+  map.flyTo({
+    center: [
+      state.currLog, 
+      state.currLat]
+  });
+}
+
 function setVisibility() {
   // allRestrooms.map(function(el) {
     // var gender;
