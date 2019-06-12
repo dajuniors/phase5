@@ -52,30 +52,7 @@ function onCurrentPos(position) {
       map.getSource('userLocation').setData(geojson);
       renderCards(); 
     } else {
-        renderCards();
-        map.addLayer({
-          "id": "userLocation",
-          "type": "circle",
-          "source": {
-            "type": "geojson",
-            "data": {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                "type": "LineString",
-                "coordinates": lnglat
-              }
-            }
-          },
-          "paint": {
-            'circle-radius': {
-              'base': 2,
-              // edit stops
-              'stops': [[18, 10], [22, 100]]
-              },
-              'circle-color': "#1692FF"
-          }
-        })
+      renderCards();
       map.flyTo({center: lnglat, zoom: 18});
     }
 }
@@ -92,6 +69,7 @@ function onCurrentPos(position) {
         "type": "geojson",
         "data": allBathrooms
     });
+    
 
     map.addLayer({
         "id": "testing",
@@ -197,7 +175,49 @@ function renderCards() {
     let coordinates = currBathroom.geometry.coordinates.slice();
     diatanceBathrooms.push({id: distance(coordinates), data: currBathroom});
   }
+
   let sortedBathrooms = sortByKey(diatanceBathrooms, 'id')
+  if(state.currLat != null && state.currLog != null) {
+    if (map.getSource('userLocation')) {
+      var geojson = {
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: [state.currLog, state.currLat]
+        }
+      }
+      map.getSource('userLocation').setData(geojson);
+    } else {
+      map.addLayer({
+        "id": "userLocation",
+        "type": "circle",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [state.currLog, state.currLat]
+            }
+          }
+        },
+        'layout': {
+          "visibility": 'visible'
+        },
+        "paint": {
+          'circle-radius': {
+            'base': 2,
+            // edit stops
+            'stops': [[18, 10], [22, 100]]
+            },
+            'circle-color': "#1692FF"
+        }
+      });
+    }
+    
+  } 
 
   let cards = document.getElementById('cardStack');
   cards.innerHTML = "";
