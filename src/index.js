@@ -26,7 +26,7 @@ function handleResponse(response) {
 let map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/streets-v9",
-    center: [-122.308035, 47.653854],
+    center: [-122.308790, 47.655273],
     zoom: 15
 });
 map.addControl(new mapboxgl.NavigationControl());
@@ -51,7 +51,7 @@ function onCurrentPos(position) {
       map.getSource('userLocation').setData(geojson);
       renderCards(); 
     } else {
-        renderCards(); 
+        renderCards();
         map.addLayer({
           "id": "userLocation",
           "type": "circle",
@@ -74,9 +74,9 @@ function onCurrentPos(position) {
               },
               'circle-color': "#1692FF"
           }
-      })
+        })
+      map.flyTo({center: lnglat, zoom: 18});
     }
-    map.flyTo({center: lnglat, zoom: 18});
 }
 
 
@@ -131,8 +131,8 @@ map.on('click', 'testing', function (e) {
   }
   test += test3;
 
-  let test4 = ' <p> KEY REQUIRED: NO </p>';
-  if (data.properties.disabilityAccess) {
+  let test4 = ' <p> KEY REQUIRED: YES </p>';
+  if (data.properties.needKey) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
   }
   test += test4;
@@ -493,8 +493,8 @@ function getRoute(end) {
 function startCoords(end) {  
   var address = document.getElementById('address');
   let searchtext = address.value;
-  let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
-  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken + "&limit=1&bbox=" + bbox;
+  // let bbox = "-122.31753496111074,47.647176261717675,-122.29269536138283,47.66094893111739"
+  let url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + searchtext + ".json?&" + "&access_token=" +mapboxgl.accessToken; // + "&limit=1&bbox=" + bbox;
   fetch(url)
         .then(handleResponse)
         .then(data => {
@@ -638,7 +638,7 @@ function markerPopUpFromCard() {
   test += test3;
 
   let test4 = ' <p> KEY REQUIRED: NO </p>';
-  if (data.properties.disabilityAccess) {
+  if (data.properties.needKey) {
     test4 = ' <p> KEY REQUIRED: YES </p>';
   }
   test += test4;
