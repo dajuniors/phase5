@@ -16,27 +16,28 @@
         <div class="container text-center" id="logo">
             <span><h1 class="logo">OneRestroomAway</h1></span>
         </div>
-        <div id="filter" class="filter">
+        <div class="filter">
+          <span><h8 id="filter">Filter on restroom properties: </h8></span>
           <ul>
             <li>
               <input type="checkbox" name="gender" id="male" value="male">
-              <label for="male"><img src="imgs/m_24.png"/></label>
+              <label for="male"><img src="imgs/m_24.png"/><span> Male Restroom</span></label>
             </li>
             <li>
               <input type="checkbox" name="gender" id="female" value="female">
-              <label for="female"><img src="imgs/f_24.png"/></label>
+              <label for="female"><img src="imgs/f_24.png"/><span> Female Restroom</span></label>
             </li>
             <li>
               <input type="checkbox" name="gender" id="gn" value="gn">
-              <label for="gn"><img src="imgs/gn_24.png"/></label>
+              <label for="gn"><img src="imgs/gn_24.png"/><span> Gender Neutral</span></label>
             </li>
             <li>
               <input type="checkbox" name="dis" id="dis" value="dis">
-              <label for="dis"><img src="imgs/wc_24.png"/></label>
+              <label for="dis"><img src="imgs/wc_24.png"/><span> Disability Access</span></label>
             </li>
             <li>
               <input type="checkbox" name="key" id="key" value="key">
-              <label for="key"><img src="imgs/key_24.png"/></label>
+              <label for="key"><img src="imgs/key_24.png"/><span> Key Required</span></label>
             </li>
           </ul>
         </div>
@@ -67,41 +68,25 @@
                     </div>
                 </div>
             </button> -->
-            
-        </div>
-    </div>
-    <div id="map">
-      <div class='legend' id='legend'>
-        <div>
-          <span><img class="icon" src="imgs/marker.png" alt="bathroom marker"></span>
-          <span><p>Restroom</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/location.png" alt="user location"></span>
-          <span><p>Your Location</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/wc_24.png" alt="disability access"></span>
-          <span><p>Disability Access</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/key_24.png" alt="key required"></span>
-          <span><p>Key Required</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/m_24.png" alt="male restroom"></span>
-          <span><p>Male Restroom</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/f_24.png" alt="female restroom"></span>
-          <span><p>Female Restroom</p></span>
-        </div>
-        <div>
-          <span><img class="icon" src="imgs/gn_24.png" alt="gender neutral restroom"></span>
-          <span><p>Gender Neutral Restroom</p></span>
+
         </div>
       </div>
-    </div>
+      <div id="map">
+        <div class='legend' id='legend'>
+          <div>
+            <span><img class="icon" src="imgs/marker.png" alt="bathroom marker"></span>
+            <span><p>Restroom</p></span>
+          </div>
+          <div>
+            <span>
+              <button id='yourLoc' onclick="goToLoc()">
+                  <img class="icon" src="imgs/location.png" alt="user location">
+              </button>
+            </span>
+            <span><p>Your Location</p></span>
+          </div>
+        </div>
+      </div>
 
 
     <div id="instructions"></div>
