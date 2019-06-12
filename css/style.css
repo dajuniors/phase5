@@ -39,6 +39,9 @@
     height: 1rem;
 }
 
+h8 {
+  font-size: 1.5vw;
+}
 
 hr {
     border-color:#d4d8da;
