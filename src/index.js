@@ -40,6 +40,12 @@ function onCurrentPos(position) {
     let lnglat = [position.coords.longitude, position.coords.latitude];
     state.currLat = position.coords.latitude;
     state.currLog = position.coords.longitude;
+
+    if (state.currLat != null && state.currLog != null) {
+      let legendLoc = document.getElementById('legendLoc');
+      legendLoc.textContent = "Your Location";
+    }
+
     var geojson = {
       type: 'Feature',
       properties: {},
