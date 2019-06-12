@@ -478,7 +478,7 @@ function getRoute(end) {
       el.style.width = "30%";
       let header = '<div class="container text-center" id="logo"><h1>OneRestroomAway</h1></div>'
       let button = '<h3 class="container" style="padding:1rem;"></div><button type="button" class="btn btn-outline-light" onclick="endDirections()">←</button><h3>'
-      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
+      let form = '<form id="enteraddress"><div class="input-group container" style:"padding: 1rem"><input id="address" type="text" class="form-control" onkeypress="return event.keyCode != 13" placeholder="Enter Starting Address "aria-label="Enter Full Starting Address" aria-describedby="button-addon2"><button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="startCoords([' + end + '])">Enter</button></form></div><div id="errormessage"></div>'
       el.innerHTML = header + button + form;
     } else {
       if (state.currLat != null && state.currLog != null) {
