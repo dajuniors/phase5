@@ -70,7 +70,7 @@ function onCurrentPos(position) {
             'circle-radius': {
               'base': 2,
               // edit stops
-              'stops': [[12, 2], [22, 180]]
+              'stops': [[18, 10], [22, 100]]
               },
               'circle-color': "#1692FF"
           }
