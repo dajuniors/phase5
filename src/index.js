@@ -18,6 +18,7 @@ function handleResponse(response) {
     } else {
         return response.json()
             .then(function(err) {
+              window.alert(err.message);
               throw new Error(err.errorMessage);
             });
     }
